@@ -22,6 +22,10 @@ describe String do
     it "handles multiple consonants" do
       expect('true'.pig_latinize).to eq('uetray')
     end
+
+    it "handles a word that is all caps" do
+      expect('TRUE'.pig_latinize).to eq('UETRAY')
+    end
   end
 
   context "multiple words" do
