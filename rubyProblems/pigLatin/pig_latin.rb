@@ -44,6 +44,4 @@ class String
       new_string.capitalize!
     end
   end
-
-
 end
