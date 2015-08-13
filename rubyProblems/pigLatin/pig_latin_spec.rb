@@ -23,4 +23,10 @@ describe String do
       expect('true'.pig_latinize).to eq('uetray')
     end
   end
+
+  context "multiple words" do
+    it "handles two words" do
+      expect('the cat'.pig_latinize).to eq('ethay atcay')
+    end
+  end
 end

@@ -1,6 +1,12 @@
 class String
 
   def pig_latinize
+    self.split(' ').map do |word|
+      pig_latinize_one_word(word)
+    end.join(' ')
+  end
+
+  def pig_latinize_one_word
     opening_vowel = /\A[aeiouy]/i
     opening_capital = /\A[A-Z]/
     multiple_consonants = /\A[^aeiouy]*/i
