@@ -28,5 +28,11 @@ describe String do
     it "handles two words" do
       expect('the cat'.pig_latinize).to eq('ethay atcay')
     end
+
+    it "handles multiple words with vowels" do
+      test_string = 'offer and acceptance makes a contract'
+      correct_output = 'offeryay andyay acceptanceyay akesmay ayay ontractcay'
+      expect(test_string.pig_latinize).to eq(correct_output)
+    end
   end
 end
