@@ -23,6 +23,12 @@ class String
   end
 
   def pig_latinize_one_word(word)
+    if word.match('-')
+      return word.split('-').map do |one_word|
+        pig_latinize_one_word(one_word)
+      end.join('-')
+    end
+
     word = remove_punctuation(word)
 
     if word.match(opening_vowel)

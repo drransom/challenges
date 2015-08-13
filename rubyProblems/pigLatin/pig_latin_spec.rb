@@ -44,5 +44,9 @@ describe String do
     it "simple contraction" do
       expect("can't".pig_latinize).to eq('antcay')
     end
+
+    it "dash" do
+      expect("match-test".pig_latinize).to eq('atchmay-esttay')
+    end
   end
 end
