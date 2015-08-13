@@ -23,6 +23,7 @@ class String
   end
 
   def pig_latinize_one_word(word)
+    word = remove_punctuation(word)
 
     if word.match(opening_vowel)
       new_string = word + 'yay'
@@ -43,5 +44,9 @@ class String
       new_string.downcase!
       new_string.capitalize!
     end
+  end
+
+  def remove_punctuation(word)
+    word.split(/[^a-zA-Z]/).join
   end
 end
