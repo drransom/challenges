@@ -45,3 +45,31 @@ describe String do
     end
   end
 end
+
+describe Array do
+  context '#rotate_90_degrees!' do
+    it 'handles an empty array' do
+      arr = []
+      arr.rotate_90_degrees!
+      expect(arr).to be_empty
+    end
+
+    it 'handles a 1x1 case' do
+      arr = [[1]]
+      arr.rotate_90_degrees!
+      expect(arr).to eq([[1]])
+    end
+
+    it 'handles a 2x2 case' do
+      arr = [[1, 2], [3, 4]]
+      arr.rotate_90_degrees!
+      expect(arr).to eq([[4, 1], [3, 2]])
+    end
+
+    it 'handles a 3x3 case' do
+      arr = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+      arr.rotate_90_degrees!
+      expect(arr).to eq([7, 4, 1], [8, 5, 2], [9, 6, 3])
+    end
+  end
+end

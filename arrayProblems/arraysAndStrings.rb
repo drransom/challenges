@@ -18,7 +18,11 @@ private
     end
     output
   end
+end
 
-
-
+class Array
+  #assumes self is NxN
+  def rotate_90_degrees!
+    
+  end
 end
