@@ -44,32 +44,49 @@ describe String do
       expect('a bc e '.replace_spaces).to eq('a%20bc%20e%20')
     end
   end
+
+  context '#basic_compression' do
+    it 'handles a simple case' do
+      expect('aaaaa'.basic_compression).to eq('a5')
+    end
+    it 'handles a more complicated case' do
+      expect('baaaccbbbbba'.basic_compression).to eq('b1a3c2b5a1')
+    end
+
+    it 'empty string' do
+      expect(''.basic_compression).to eq('')
+    end
+
+    it 'compressed is longer than original' do
+      expect('ababaa'.basic_compression).to eq('ababaa')
+    end
+  end
 end
 
 describe Array do
-  context '#rotate_90_degrees!' do
-    it 'handles an empty array' do
-      arr = []
-      arr.rotate_90_degrees!
-      expect(arr).to be_empty
-    end
-
-    it 'handles a 1x1 case' do
-      arr = [[1]]
-      arr.rotate_90_degrees!
-      expect(arr).to eq([[1]])
-    end
-
-    it 'handles a 2x2 case' do
-      arr = [[1, 2], [3, 4]]
-      arr.rotate_90_degrees!
-      expect(arr).to eq([[4, 1], [3, 2]])
-    end
-
-    it 'handles a 3x3 case' do
-      arr = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-      arr.rotate_90_degrees!
-      expect(arr).to eq([7, 4, 1], [8, 5, 2], [9, 6, 3])
-    end
-  end
+  # context '#rotate_90_degrees!' do
+  #   it 'handles an empty array' do
+  #     arr = []
+  #     arr.rotate_90_degrees!
+  #     expect(arr).to be_empty
+  #   end
+  #
+  #   it 'handles a 1x1 case' do
+  #     arr = [[1]]
+  #     arr.rotate_90_degrees!
+  #     expect(arr).to eq([[1]])
+  #   end
+  #
+  #   it 'handles a 2x2 case' do
+  #     arr = [[1, 2], [3, 4]]
+  #     arr.rotate_90_degrees!
+  #     expect(arr).to eq([[3, 1], [4, 2]])
+  #   end
+  #
+  #   it 'handles a 3x3 case' do
+  #     arr = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+  #     arr.rotate_90_degrees!
+  #     expect(arr).to eq([[7, 4, 1], [8, 5, 2], [9, 6, 3]])
+  #   end
+  # end
 end
