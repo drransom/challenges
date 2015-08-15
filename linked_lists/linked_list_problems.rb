@@ -171,6 +171,14 @@ class DoublyLinkedList
     arr_hash_val ^ str_hash_val
   end
 
+  def to_h
+    to_a.to_h
+  end
+
+  def to_hash
+    to_h
+  end
+
   def map
     return enum_for(:map) unless block_given?
 
@@ -180,7 +188,6 @@ class DoublyLinkedList
     end
     new_list
   end
-
 
 private
   attr_accessor :first_node, :last_node

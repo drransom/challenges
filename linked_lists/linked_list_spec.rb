@@ -523,6 +523,29 @@ describe DoublyLinkedList do
         expect(list.to_s).to eq([].to_s)
       end
     end
+
+    describe "to_h" do
+      it 'converts to a hash' do
+        list = DoublyLinkedList.new([[1, 2], [2, 2], [3, 2]])
+        expect(list.to_h).to be_a(Hash)
+      end
+
+      it 'produces the desired value' do
+        list = DoublyLinkedList.new([[1, 2], [2, 2], [3, 2]])
+        expect(list.to_h).to eq({1 => 2, 2 => 2, 3 => 2})
+      end
+
+      it 'does not modify the original list' do
+        list = DoublyLinkedList.new([[1, 2], [2, 2], [3, 2]])
+        list.to_h
+        expect(list).to eq(DoublyLinkedList.new([[1, 2], [2, 2], [3, 2]]))
+      end
+
+      it 'empty list' do
+        list = DoublyLinkedList.new
+        expect(list.to_h).to eq({})
+      end
+    end
   end
 
   context Enumerable do
