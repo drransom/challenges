@@ -278,6 +278,10 @@ describe DoublyLinkedList do
       it 'negative index out of bounds' do
         expect { list.insert(-10, 10) }.to raise_error(IndexError)
       end
+
+      it 'returns value inserted' do
+        expect(list.insert(3, 5)).to eq(5)
+      end
     end
   end
 end
