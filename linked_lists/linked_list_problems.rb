@@ -84,6 +84,10 @@ class DoublyLinkedList
     end
   end
 
+  def <<(value)
+    push(value)
+  end
+
 private
   attr_accessor :first_node, :last_node
 

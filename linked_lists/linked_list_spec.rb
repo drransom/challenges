@@ -96,6 +96,13 @@ describe DoublyLinkedList do
       end
     end
 
+    describe '#<<' do
+      it 'aliases #push' do
+        expect(list).to receive(:push).with(10)
+        list << 10
+      end
+    end
+
     describe '#unshift' do
       it 'does not raise error' do
         expect { list.unshift(5) }.to_not raise_error
@@ -217,6 +224,13 @@ describe DoublyLinkedList do
       it 'raises an error if a negative index is out of bounds' do
         expect { list[-5] = 10 }.to raise_error(IndexError)
       end
+    end
+  end
+
+  context 'insert and delete' do
+    subject(:list) { DoublyLinkedList.new([1, 2, 3, 4]) }
+
+    describe 'insert' do
     end
   end
 end
