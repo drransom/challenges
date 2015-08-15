@@ -153,6 +153,10 @@ class DoublyLinkedList
     true
   end
 
+  def hash
+    super
+  end
+
 
 private
   attr_accessor :first_node, :last_node

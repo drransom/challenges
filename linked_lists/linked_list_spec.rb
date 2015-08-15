@@ -458,6 +458,28 @@ describe DoublyLinkedList do
         expect(list == other_list).to be(false)
       end
     end
+
+    describe "#hash" do
+      subject(:list) { DoublyLinkedList.new([1, 0, 2, 3, 4, 3, 4, 3, 1, 2]) }
+      it 'list\'s hash is equal to itself' do
+        expect(list.hash == list.hash).to be(true)
+      end
+
+      it 'another list with the same values' do
+        other_list = DoublyLinkedList.new([1, 0, 2, 3, 4, 3, 4, 3, 1, 2])
+        expect(list.hash == other_list.hash).to be(true)
+      end
+
+      it "another list with different values" do
+        other_list = DoublyLinkedList.new([1, 3, 2, 3, 4, 3, 4, 3, 1, 2])
+        expect(list.hash == other_list.hash).to be(false)
+      end
+
+      it "another list that has the same initial values" do
+        other_list = DoublyLinkedList.new([1, 0, 2, 3, 4, 3, 4, 3, 1, 2, 3])
+        expect(list.hash == other_list.hash).to be(false)
+      end
+    end
   end
 
   context Enumerable do
