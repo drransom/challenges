@@ -53,6 +53,52 @@ describe DLLNode do
     end
   end
 
+  context 'equality' do
+    describe '#==' do
+      it 'nodes with the same value are ==' do
+        x = DLLNode.new(0)
+        y = DLLNode.new(0)
+        expect(x == y).to be(true)
+      end
+
+      it 'nodes with different values are not ==' do
+        x = DLLNode.new(0)
+        y = DLLNode.new(10)
+        expect(x == y).to be(false)
+      end
+
+      it 'nodes whose objects are different are still ==' do
+        x = DLLNode.new([1])
+        y = DLLNode.new([1])
+        expect(x == y).to be(true)
+      end
+
+      it 'nodes are == to values' do
+        x = DLLNode.new(0)
+        expect(x == 0).to be(true)
+      end
+
+      it 'nodes are not == to the wrong value' do
+        x = DLLNode.new(0)
+        expect(x == 5).to be(false)
+      end
+    end
+
+    describe '#hash' do
+      it 'nodes hash to the same value' do
+        x = DLLNode.new(0)
+        y = DLLNode.new(0)
+        expect(x.hash == y.hash).to be(true)
+      end
+
+      it 'nodes with different values hash to different values' do
+        x = DLLNode.new(0)
+        y = DLLNode.new(10)
+        expect(x.hash == y.hash).to be(false)
+      end
+    end
+  end
+
 end
 
 describe DoublyLinkedList do

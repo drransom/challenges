@@ -190,9 +190,9 @@ private
   def delete_node!(node)
     if length <= 1
       empty_list!
-    elsif node == @first_node
+    elsif node.equal?(@first_node)
       delete_first_node!
-    elsif node == @last_node
+    elsif node.equal?(@last_node)
       delete_last_node!
     else
       delete_middle_node!(node)
@@ -259,6 +259,18 @@ class DLLNode
     @value = value
     @parent = nil
     @child = nil
+  end
+
+  def ==(other)
+    if other.is_a?(DLLNode)
+      self.value == other.value
+    else
+      self.value == other
+    end
+  end
+
+  def hash
+    value.hash
   end
 
 end
