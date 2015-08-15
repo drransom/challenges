@@ -436,6 +436,30 @@ describe DoublyLinkedList do
 
   end
 
+  context 'equality' do
+    describe "#==" do
+      subject(:list) { DoublyLinkedList.new([1, 0, 2, 3, 4, 3, 4, 3, 1, 2]) }
+      it 'list is equal to itself' do
+        expect(list == list).to be(true)
+      end
+
+      it 'list is equal to another list with the same values' do
+        other_list = DoublyLinkedList.new([1, 0, 2, 3, 4, 3, 4, 3, 1, 2])
+        expect(list == other_list).to be(true)
+      end
+
+      it "list is not equal to another list with different values" do
+        other_list = DoublyLinkedList.new([1, 3, 2, 3, 4, 3, 4, 3, 1, 2])
+        expect(list == other_list).to be(false)
+      end
+
+      it "list is not equal to another list that has the same initial values" do
+        other_list = DoublyLinkedList.new([1, 0, 2, 3, 4, 3, 4, 3, 1, 2, 3])
+        expect(list == other_list).to be(false)
+      end
+    end
+  end
+
   context Enumerable do
     subject(:list) { DoublyLinkedList.new([1, 0, 2, 3, 4, 3, 4, 3, 1, 2]) }
     describe '#each' do

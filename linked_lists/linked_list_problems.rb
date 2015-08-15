@@ -145,6 +145,15 @@ class DoublyLinkedList
     self
   end
 
+  def ==(other_list)
+    return false unless length == other_list.length
+    self.each_with_index do |elem, idx|
+      return false unless elem == other_list[idx]
+    end
+    true
+  end
+
+
 private
   attr_accessor :first_node, :last_node
 
