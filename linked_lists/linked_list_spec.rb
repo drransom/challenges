@@ -52,6 +52,7 @@ describe DLLNode do
       expect(node.parent).to eq(parent)
     end
   end
+
 end
 
 describe DoublyLinkedList do
@@ -387,5 +388,21 @@ describe DoublyLinkedList do
 
     end
 
+  end
+
+  context Enumerable do
+    subject(:list) { DoublyLinkedList.new([1, 0, 2, 3, 4, 3, 4, 3, 1, 2]) }
+    describe '#each' do
+      it 'enumerates over each' do
+        count = 0
+        test_proc = Proc.new { |elem| count += 1 if elem == 2 }
+        list.each &test_proc
+        expect(count).to eq(2)
+      end
+
+      it 'returns in enumerable if no block given' do
+        expect(list.each).to be_a(Enumerator)
+      end
+    end
   end
 end

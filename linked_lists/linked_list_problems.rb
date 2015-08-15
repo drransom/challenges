@@ -1,5 +1,7 @@
 require 'byebug'
 class DoublyLinkedList
+  include Enumerable
+
   attr_reader :length
 
   def first
@@ -132,6 +134,17 @@ class DoublyLinkedList
     last_deleted ? last_deleted.value : nil
   end
 
+  def each
+    return enum_for(:each) unless block_given?
+
+    current = first_node
+    while current
+      yield current.value
+      current = current.child
+    end
+    self
+  end
+
 private
   attr_accessor :first_node, :last_node
 
@@ -247,6 +260,7 @@ class DLLNode
     @parent = nil
     @child = nil
   end
+
 end
 
 class NullNode
