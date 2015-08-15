@@ -496,5 +496,25 @@ describe DoublyLinkedList do
         expect(list.each).to be_a(Enumerator)
       end
     end
+
+    describe '#map' do
+      subject(:list) { DoublyLinkedList.new([1, 0, 2, 3, 4, 3, 4, 3, 1, 2]) }
+      it 'successfully maps' do
+        answer = DoublyLinkedList.new([2, 0, 4, 6, 8, 6, 8, 6, 2, 4])
+        prc = Proc.new { |x| x* 2 }
+        expect(list.map &prc).to eq(answer)
+      end
+
+      it 'does not modify the original list' do
+        prc = Proc.new { |x| x * 2 }
+        answer = list.map &prc
+        expect(answer).to_not be(list)
+        expect(list[0]).to eq(1)
+      end
+
+      it 'no block given' do
+        expect(list.map).to be_a(Enumerator)
+      end
+    end
   end
 end

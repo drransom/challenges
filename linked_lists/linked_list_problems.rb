@@ -157,6 +157,16 @@ class DoublyLinkedList
     super
   end
 
+  def map
+    return enum_for(:map) unless block_given?
+
+    new_list = DoublyLinkedList.new
+    self.each do |value|
+      new_list.push(yield value)
+    end
+    new_list
+  end
+
 
 private
   attr_accessor :first_node, :last_node
