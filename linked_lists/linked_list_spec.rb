@@ -283,5 +283,49 @@ describe DoublyLinkedList do
         expect(list.insert(3, 5)).to eq(5)
       end
     end
+
+    describe '#delete_at' do
+
+      it 'deletes at the correct position' do
+        list.delete_at(1)
+        expect(list[1]).to eq(3)
+      end
+
+      it 'length of list is indexed' do
+        list.delete_at(2)
+        expect(list.length).to eq(3)
+      end
+
+      it 'deletes at first index' do
+        list.delete_at(0)
+        expect(list[0]).to eq(2)
+        expect(list.first).to eq(2)
+        expect(list[1]).to eq(3)
+      end
+
+      it 'deletes at last index' do
+        list.delete_at(3)
+        expect(list[3]).to eq(nil)
+        expect(list.last).to eq(3)
+        expect(list[2]).to eq(3)
+      end
+
+      it 'deletes at negative index' do
+        list.delete_at(-2)
+        expect(list[2]).to eq(4)
+      end
+
+      it 'positive index out of bounds' do
+        expect{ list.delete_at(5) }.to raise_error(IndexError)
+      end
+
+      it 'negative index out of bounds' do
+        expect { list.delete_at(-10) }.to raise_error(IndexError)
+      end
+
+      it 'returns value deleted' do
+        expect(list.delete_at(3)).to eq(4)
+      end
+    end
   end
 end

@@ -107,6 +107,19 @@ class DoublyLinkedList
     end
   end
 
+  def delete_at(index)
+    node = find_node_at_index(index)
+    if node.is_a?(NullNode)
+      message = if length == 0
+        "cannot index into empty list"
+      else
+        "index #{index} outside of list bounds: -#{length}...#{length}"
+      end
+      raise IndexError.new(message)
+    end
+    delete_node!(node)
+  end
+
 private
   attr_accessor :first_node, :last_node
 
@@ -147,6 +160,59 @@ private
     node.parent = node
     node.child = new_node
     @length += 1
+  end
+
+  def delete_node!(node)
+    if length <= 1
+      empty_list!
+    elsif node == @first_node
+      delete_first_node!
+    elsif node == @last_node
+      delete_last_node!
+    else
+      delete_middle_node!(node)
+    end
+    node.value
+  end
+
+  def delete_first_node!
+    case length
+    when 0
+      nil
+    when 1
+      empty_list!
+    else
+      node = @first_node
+      @first_node = node.child
+      node.child.parent = nil
+      @length -= 1
+    end
+  end
+
+  def delete_last_node!
+    case length
+    when 0
+      nil
+    when 1
+      empty_list!
+    else
+      node = @last_node
+      @last_node = node.parent
+      @last_node.child = nil
+      @length -= 1
+    end
+  end
+
+  def delete_middle_node!(node)
+    node.parent.child = node.child
+    node.child.parent = node.parent
+    @length -= 1
+  end
+
+  def empty_list!
+    @first_node = nil
+    @last_node = nil
+    @length = 0
   end
 end
 
