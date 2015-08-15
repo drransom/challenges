@@ -120,6 +120,18 @@ class DoublyLinkedList
     delete_node!(node)
   end
 
+  #deletes by value
+  def delete(value)
+    last_deleted = nil
+    traverse_original_each do |node|
+      if node.value == value
+        delete_node!(node)
+        last_deleted = node
+      end
+    end
+    last_deleted ? last_deleted.value : nil
+  end
+
 private
   attr_accessor :first_node, :last_node
 
@@ -213,6 +225,18 @@ private
     @first_node = nil
     @last_node = nil
     @length = 0
+  end
+
+  def traverse_original_each &prc
+    return unless block_given?
+    start = @first_node
+    finish = @last_node
+    current_node = @first_node
+    while current_node
+      next_node = current_node.child
+      prc.call(current_node)
+      current_node = next_node
+    end
   end
 end
 

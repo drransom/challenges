@@ -327,5 +327,57 @@ describe DoublyLinkedList do
         expect(list.delete_at(3)).to eq(4)
       end
     end
+
+    describe '#delete' do
+      it 'basic case' do
+        list = DoublyLinkedList.new([1, 0, 2, 3, 4, 3, 4, 3, 1, 2])
+        list.delete(0)
+        expect(list.length).to eq(9)
+        expect(list[1]).to eq(2)
+      end
+
+      it 'empty list' do
+        list = DoublyLinkedList.new
+        expect { list.delete(0) }.to_not raise_error
+        expect(list.length).to eq(0)
+      end
+
+      it 'multiple items' do
+        list = DoublyLinkedList.new([1, 0, 2, 3, 4, 3, 5, 3, 1])
+        list.delete(3)
+        expect(list[3]).to eq(4)
+        expect(list[4]).to eq(5)
+        expect(list[5]).to eq(1)
+        expect(list.length).to eq(6)
+      end
+
+      it 'first item' do
+        list = DoublyLinkedList.new([1, 0, 2, 3, 4, 3, 4, 3, 1, 2])
+        list.delete(1)
+        expect(list.first).to eq(0)
+        expect(list[0]).to eq(0)
+        expect(list.length).to eq(8)
+      end
+
+      it 'last item' do
+        list = DoublyLinkedList.new([1, 0, 2, 3, 4, 3, 4, 3, 1, 2])
+        list.delete(2)
+        expect(list.last).to eq(1)
+        expect(list[-1]).to eq(1)
+        expect(list.length).to eq(8)
+      end
+
+      it 'returns value deleted' do
+        list = DoublyLinkedList.new([1, 0, 2, 3, 4, 3, 4, 3, 1, 2])
+        expect(list.delete(2)).to eq(2)
+      end
+
+      it 'item is not in list' do
+        list = DoublyLinkedList.new([1, 0, 2, 3, 4, 3, 4, 3, 1, 2])
+        expect{ list.delete(5) }.to_not raise_error
+        expect(list.length).to eq(10)
+        expect(list.delete(10)).to eq(nil)
+      end
+    end
   end
 end
