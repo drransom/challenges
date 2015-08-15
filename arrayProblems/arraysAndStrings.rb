@@ -23,7 +23,13 @@ class String
     self.length < new_str_arr.length ? self : new_str_arr.join
   end
 
+
+
 private
+
+  def zeroify_column!(col_idx)
+
+  end
 
   def count_chars(str)
     output = Hash.new(0)
@@ -35,6 +41,31 @@ private
 end
 
 class Array
+  require 'set'
+  #assumes m by n matrix
+  def zeroify!
+    traversed = Set.new
+    self.each_with_index do |row, row_idx|
+      row.each_with_index do |elem, col_idx|
+        if elem == 0 && !traversed.include?([row_idx, col_idx])
+          set_elements_to_zero!(row, col_idx, traversed)
+          break
+        end
+      end
+    end
+    self
+  end
+
+private
+  def set_elements_to_zero!(row,  col_idx, traversed)
+    row.map! {0}
+    self.each_with_index do |row, row_idx|
+      unless row[col_idx] == 0
+        traversed << [row_idx, col_idx]
+        row[col_idx] = 0
+      end
+    end
+  end
   #assumes self is NxN
   # def rotate_90_degrees!
   #   n = self.length

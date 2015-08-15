@@ -64,6 +64,37 @@ describe String do
 end
 
 describe Array do
+  context '#zeroify!' do
+    it 'handles a 1x1 case' do
+      test_array = [[0]]
+      test_array.zeroify!
+      expect(test_array).to eq([[0]])
+    end
+
+    it 'zero rows and columns' do
+      test_array = []
+      test_array.zeroify!
+      expect(test_array).to be_empty
+    end
+
+    it 'more complicated case' do
+      test_array = [[1, 2, 3],
+                    [4, 5, 0],
+                    [7, 0, 9],
+                    [1, 5, 2]]
+      correct_answer = [[1, 0, 0],
+                        [0, 0, 0],
+                        [0, 0, 0],
+                        [1, 0, 0]]
+      test_array.zeroify!
+      expect(test_array).to eq(correct_answer)
+    end
+
+    it 'returns the original array' do
+      test_array = [[5]]
+      expect(test_array.zeroify!).to be(test_array)
+    end
+  end
   # context '#rotate_90_degrees!' do
   #   it 'handles an empty array' do
   #     arr = []
