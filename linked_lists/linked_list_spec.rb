@@ -381,8 +381,8 @@ describe DoublyLinkedList do
 
       it 'return value is deleted object rather than deleted value' do
         x = [1]
-        list = DoublyLinkedList.new([[1], 0, [1]])
-        expect(list.delete(1)).to be(x)
+        list = DoublyLinkedList.new([[1], 0, x])
+        expect(list.delete([1])).to be(x)
       end
 
     end
