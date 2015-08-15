@@ -230,7 +230,54 @@ describe DoublyLinkedList do
   context 'insert and delete' do
     subject(:list) { DoublyLinkedList.new([1, 2, 3, 4]) }
 
-    describe 'insert' do
+    describe '#insert' do
+
+      it 'inserts at the correct position' do
+        list.insert(3, 5)
+        expect(list[3]).to eq(5)
+      end
+
+      it 'bumps items in the list' do
+        list.insert(3, 5)
+        expect(list[4]).to eq(4)
+      end
+
+      it 'length of list is indexed' do
+        list.insert(3, 5)
+        expect(list.length).to eq(5)
+      end
+
+      it 'inserts at first index' do
+        list.insert(0, 10)
+        expect(list[0]).to eq(10)
+        expect(list.first).to eq(10)
+        expect(list[1]).to eq(1)
+      end
+
+      it 'inserts after last index' do
+        list.insert(4, 10)
+        expect(list[4]).to eq(10)
+        expect(list.last).to eq(10)
+        expect(list[3]).to eq(4)
+      end
+
+      it 'inserts at negative index' do
+        list.insert(-2, 10)
+        expect(list[2]).to eq(10)
+      end
+
+      it 'bumps items with negative index' do
+        list.insert(-2, 10)
+        expect(list[3]).to eq(3)
+      end
+
+      it 'positive index out of bounds' do
+        expect{ list.insert(5, 10) }.to raise_error(IndexError)
+      end
+
+      it 'negative index out of bounds' do
+        expect { list.insert(-10, 10) }.to raise_error(IndexError)
+      end
     end
   end
 end

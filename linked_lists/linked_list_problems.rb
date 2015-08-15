@@ -34,6 +34,10 @@ class DoublyLinkedList
     node.value
   end
 
+  def <<(value)
+    push(value)
+  end
+
   def unshift(value)
     node = DLLNode.new(value)
     node.child = @first_node
@@ -84,8 +88,23 @@ class DoublyLinkedList
     end
   end
 
-  def <<(value)
-    push(value)
+  def insert(index, value)
+    if index == length || index == - (length + 1)
+      push(value)
+    else
+      node = find_node_at_index(index)
+      if node.is_a?(NullNode)
+        message = if length == 0
+          "cannot index into empty list"
+        else
+          "index #{index} outside of list bounds: -#{length}...#{length}"
+        end
+        raise IndexError.new(message)
+      else
+        insert_before_node(node, value)
+        value
+      end
+    end
   end
 
 private
@@ -112,6 +131,22 @@ private
     current_node = @last_node
     (-idx - 1).times { current_node = current_node.parent }
     current_node
+  end
+
+  def insert_before_node(node, value)
+    new_node = DLLNode.new(value)
+
+    if node.parent
+      node.parent.child = new_node
+    else
+      @first_node = new_node
+    end
+
+    new_node.child = node
+    new_node.parent = node.parent
+    node.parent = node
+    node.child = new_node
+    @length += 1
   end
 end
 
