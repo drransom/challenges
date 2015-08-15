@@ -500,6 +500,29 @@ describe DoublyLinkedList do
         expect(list.to_a).to eq([])
       end
     end
+
+    describe "to_s" do
+      it 'converts to a string' do
+        list = DoublyLinkedList.new([1, 2, 3])
+        expect(list.to_s).to be_a(String)
+      end
+
+      it 'produces the desired value' do
+        list = DoublyLinkedList.new([1, 2, 3])
+        expect(list.to_s).to eq([1, 2, 3].to_s)
+      end
+
+      it 'does not modify the original list' do
+        list = DoublyLinkedList.new([1, 2, 3])
+        list.to_s
+        expect(list).to eq(DoublyLinkedList.new([1, 2, 3]))
+      end
+
+      it 'empty list' do
+        list = DoublyLinkedList.new
+        expect(list.to_s).to eq([].to_s)
+      end
+    end
   end
 
   context Enumerable do

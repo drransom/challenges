@@ -161,9 +161,14 @@ class DoublyLinkedList
     end
   end
 
+  def to_s
+    to_a.to_s
+  end
+
   def hash
-    arr_hash = Enumerable.instance_methods.map { |elem| elem.value }.hash
-    arr_hash ^ arr_hash
+    arr_hash_val = to_a.hash
+    str_hash_val = to_s.hash
+    arr_hash_val ^ str_hash_val
   end
 
   def map
