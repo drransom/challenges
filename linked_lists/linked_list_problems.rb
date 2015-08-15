@@ -47,6 +47,31 @@ class DoublyLinkedList
     node.value
   end
 
+  def pop
+    if @last_node
+      value = @last_node.value
+      @last_node = @last_node.parent
+      @last_node.child = nil
+    else
+      value = nil
+    end
+    @length -= 1
+    value
+  end
+
+  def shift
+    if @first_node
+      value = @first_node.value
+      @first_node = @first_node.child
+      @first_node.parent = nil
+    else
+      value = nil
+    end
+    @length -= 1
+    value
+  end
+
+
 private
   attr_accessor :first_node, :last_node
 end

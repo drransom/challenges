@@ -117,4 +117,48 @@ describe DoublyLinkedList do
       end
     end
   end
+
+  context 'pop and shift' do
+    describe '#pop' do
+      subject(:list) { DoublyLinkedList.new([1, 2, 3, 4]) }
+      it 'can pop one item' do
+        expect { list.pop }.to_not raise_error
+      end
+
+      it 'pop returns value of last item' do
+        expect(list.pop).to eq(4)
+      end
+
+      it 'length changes after pop' do
+        list.pop
+        expect(list.length).to eq(3)
+      end
+
+      it 'last item is different after pop' do
+        list.pop
+        expect(list.last).to eq(3)
+      end
+    end
+
+    describe '#shift' do
+      subject(:list) { DoublyLinkedList.new([1, 2, 3, 4]) }
+      it 'can shift one item' do
+        expect { list.shift }.to_not raise_error
+      end
+
+      it 'shift returns value of last item' do
+        expect(list.shift).to eq(1)
+      end
+
+      it 'length changes after shift' do
+        list.shift
+        expect(list.length).to eq(3)
+      end
+
+      it 'first item is different after shift' do
+        list.shift
+        expect(list.first).to eq(2)
+      end
+    end
+  end
 end
