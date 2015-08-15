@@ -153,8 +153,17 @@ class DoublyLinkedList
     true
   end
 
+  def to_a
+    [].tap do |arr|
+      self.each do |elem|
+        arr << elem
+      end
+    end
+  end
+
   def hash
-    super
+    arr_hash = Enumerable.instance_methods.map { |elem| elem.value }.hash
+    arr_hash ^ arr_hash
   end
 
   def map

@@ -482,6 +482,26 @@ describe DoublyLinkedList do
     end
   end
 
+  context 'to other types' do
+    describe '#to_a' do
+      it 'converts to an array' do
+        list = DoublyLinkedList.new([1, 2, 3])
+        expect(list.to_a).to eq([1, 2, 3])
+      end
+
+      it 'does not modify the original list' do
+        list = DoublyLinkedList.new([1, 2, 3])
+        list.to_a
+        expect(list).to eq(DoublyLinkedList.new([1, 2, 3]))
+      end
+
+      it 'empty list' do
+        list = DoublyLinkedList.new
+        expect(list.to_a).to eq([])
+      end
+    end
+  end
+
   context Enumerable do
     subject(:list) { DoublyLinkedList.new([1, 0, 2, 3, 4, 3, 4, 3, 1, 2]) }
     describe '#each' do
