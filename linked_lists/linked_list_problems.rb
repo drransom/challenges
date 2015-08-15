@@ -1,4 +1,4 @@
-
+require 'byebug'
 class DoublyLinkedList
   attr_reader :length
 
@@ -71,9 +71,44 @@ class DoublyLinkedList
     value
   end
 
+  def [](idx)
+    find_node_at_index(idx).value
+  end
+
+  def []=(idx, value)
+    node = find_node_at_index(idx)
+    if node.is_a?(NullNode)
+      raise IndexError.new("index #{idx} outside of list bounds: -#{length}...#{length}")
+    else
+      node.value = value
+    end
+  end
 
 private
   attr_accessor :first_node, :last_node
+
+  def find_node_at_index(idx)
+    if idx >= 0
+      get_non_negative_index(idx)
+    else
+      get_negative_index(idx)
+    end
+  end
+
+  def get_non_negative_index(idx)
+    # debugger
+    return NullNode.new if idx >= length || length == 0
+    current_node = @first_node
+    idx.times { current_node = current_node.child }
+    current_node
+  end
+
+  def get_negative_index(idx)
+    return NullNode.new if -idx > length || length == 0
+    current_node = @last_node
+    (-idx - 1).times { current_node = current_node.parent }
+    current_node
+  end
 end
 
 class DLLNode
@@ -82,5 +117,19 @@ class DLLNode
     @value = value
     @parent = nil
     @child = nil
+  end
+end
+
+class NullNode
+  def value
+    nil
+  end
+
+  def parent
+    nil
+  end
+
+  def child
+    nil
   end
 end

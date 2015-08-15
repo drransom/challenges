@@ -161,4 +161,62 @@ describe DoublyLinkedList do
       end
     end
   end
+
+  context 'indexing' do
+    subject(:list) { DoublyLinkedList.new([1, 2, 3, 4]) }
+
+    describe '[]' do
+      it 'basic cases' do
+        expect(list[0]).to eq(1)
+        expect(list[1]).to eq(2)
+        expect(list[2]).to eq(3)
+        expect(list[3]).to eq(4)
+      end
+
+      it 'index out of bounds' do
+        expect(list[5]).to eq(nil)
+      end
+
+      it 'negative index' do
+        expect(list[-1]).to eq(4)
+        expect(list[-2]).to eq(3)
+        expect(list[-3]).to eq(2)
+        expect(list[-4]).to eq(1)
+      end
+
+      it 'negative index out of bounds' do
+        expect(list[-5]).to eq(nil)
+      end
+    end
+
+    describe '[]=' do
+      it 'can set an index at a value' do
+        list[2] = 10
+        expect(list[2]).to eq(10)
+      end
+
+      it 'indexing resets first' do
+        list[0] = 10
+        expect(list.first).to eq(10)
+      end
+
+      it 'indexing resets last' do
+        list[3] = 10
+        expect(list.last).to eq(10)
+      end
+
+      it 'can set an index at a negative value' do
+        list[-2] = 10
+        expect(list[2]).to eq(10)
+      end
+
+      it 'raises an error if the index is out of bounds' do
+        expect { list[5] = 10 }.to raise_error(IndexError)
+      end
+
+      it 'raises an error if a negative index is out of bounds' do
+        expect { list[-5] = 10 }.to raise_error(IndexError)
+      end
+    end
+  end
 end
