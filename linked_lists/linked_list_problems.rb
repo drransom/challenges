@@ -199,9 +199,6 @@ class DoublyLinkedList
     new_list
   end
 
-private
-  attr_accessor :first_node, :last_node
-
   def find_node_at_index(idx)
     if idx >= 0
       get_non_negative_index(idx)
@@ -210,8 +207,11 @@ private
     end
   end
 
+private
+  attr_accessor :first_node, :last_node
+
+
   def get_non_negative_index(idx)
-    # debugger
     return NullNode.new if idx >= length || length == 0
     current_node = @first_node
     idx.times { current_node = current_node.child }
