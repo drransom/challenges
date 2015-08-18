@@ -145,6 +145,16 @@ class DoublyLinkedList
     self
   end
 
+  def each_node
+    return enum_for(:each_node) unless block_given?
+    current = first_node
+    while current
+      yield current
+      current = current.child
+    end
+    self
+  end
+
   def ==(other_list)
     return false unless length == other_list.length
     self.each_with_index do |elem, idx|
