@@ -86,7 +86,7 @@ describe DoublyLinkedList do
       end
 
       it 'last item' do
-        expect(list.kth_to_last_without_length(0)).to eq(0)
+        expect(list.kth_to_last_without_length(0)).to eq(1)
       end
 
       it 'index exceeds list bounds' do
