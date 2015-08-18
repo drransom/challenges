@@ -13,4 +13,23 @@ class DoublyLinkedList
     end
     self
   end
+
+  # def remove_duplicates_without_buffer!
+  #   n = 1
+  #   while n <= self.length
+  #     current_node = self[n - 1]
+  #     deleted = false
+  #     self.each_node do |node|
+  #       if node == current_node && !current_node.equal?(node)
+  #         delete_node!(node)
+  #         unless deleted
+  #           deleted = true
+  #           n -= 1
+  #         end
+  #       end
+  #     end
+  #     n += 1
+  #   end
+  #   self
+  # end
 end
