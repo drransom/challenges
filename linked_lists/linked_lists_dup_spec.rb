@@ -73,4 +73,34 @@ describe DoublyLinkedList do
       end
     end
   end
+
+  context 'kth to last' do
+    describe '#kth_to_last_without_length' do
+      subject(:list) {DoublyLinkedList.new([5, 4, 3, 2, 1]) }
+      it 'simple case' do
+        expect(list.kth_to_last_without_length(1)).to eq(2)
+      end
+
+      it 'first item' do
+        expect(list.kth_to_last_without_length(4)).to eq(5)
+      end
+
+      it 'last item' do
+        expect(list.kth_to_last_without_length(0)).to eq(0)
+      end
+
+      it 'index exceeds list bounds' do
+        expect(list.kth_to_last_without_length(5)).to eq(nil)
+      end
+
+      it 'negative index' do
+        expect(list.kth_to_last_without_length(-1)).to eq(nil)
+      end
+
+      it 'empty list' do
+        empty_list = DoublyLinkedList.new
+        expect(empty_list.kth_to_last_without_length(0)).to eq(nil)
+      end
+    end
+  end
 end

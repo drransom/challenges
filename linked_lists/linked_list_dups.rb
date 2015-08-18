@@ -32,4 +32,9 @@ class DoublyLinkedList
     end
     self
   end
+
+  # def kth_to_last_without_length
+    #purpose is to find the kth to last as this was a singly linked
+    #list without known length
+  # end
 end
