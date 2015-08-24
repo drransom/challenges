@@ -2,26 +2,36 @@ require 'rspec'
 require_relative 'binary_search_tree.rb'
 
 describe BSTNode do
+
   context 'initialization' do
-    let(:left) { double("BSTNode") }
-    let(:right) { double("BSTNode") }
+    let(:left_child) { double(" BSTNode") }
+    # left_child.stub(depth: 0)
+    let(:right_child) { double("BSTNode") }
+    # right_child.stub(depth: 0)
     let(:parent) { double("BSTNode") }
+    # parent.stub(depth: 0)
+
     describe '#initialize' do
+      before(:example) do
+        allow(left_child).to receive(:depth).and_return(0)
+        allow(right_child).to receive(:depth).and_return(0)
+        allow(parent).to receive(:depth).and_return(0)
+      end
+
+
       it 'can take left, right, and parent' do
-        options = { left_child: left, right_child: right, parent: parent, value: 5}
+        options = { left_child: left_child, right_child: right_child, parent: parent, value: 5}
         test_node = BSTNode.new(options)
-        expect(test_node.left_child).to eq(left)
-        expect(test_node.right_child).to eq(right)
+        expect(test_node.left_child).to eq(left_child)
+        expect(test_node.right_child).to eq(right_child)
         expect(test_node.parent).to eq(parent)
         expect(test_node.value).to eq(5)
       end
 
       it 'can accept only some options' do
-        options = { left_child: left, parent: parent }
+        options = { left_child: left_child, parent: parent }
         test_node = BSTNode.new(options)
-        expect(test_node.left_child).to eq(left)
-        expect(test_node.right_child).to eq(nil)
-        expect(test_node.value).to eq(nil)
+        expect(test_node.left_child).to eq(left_child)
         expect(test_node.parent).to eq(parent)
       end
 
@@ -34,6 +44,11 @@ describe BSTNode do
   context 'setting other nodes' do
     let(:other_node) { double("BSTNode") }
     let(:other_node_2) { double("BSTNode") }
+    before(:example) do
+      allow(other_node).to receive(:depth).and_return(0)
+      allow(other_node_2).to receive(:depth).and_return(0)
+    end
+
     subject(:test_node) { BSTNode.new }
 
     describe '#set_left_child' do
@@ -111,5 +126,8 @@ describe BSTNode do
         expect(test_node.set_value(10)).to be(test_node)
       end
     end
+  end
+
+  context 'depth and balance' do
   end
 end
