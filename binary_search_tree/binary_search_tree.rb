@@ -10,5 +10,20 @@ class BSTNode
     @parent = options[:parent]
   end
 
+  def set_left_child(new_child)
+    @left_child = new_child
+    self
+  end
+
+  def set_right_child(new_child)
+    @right_child = new_child
+    self
+  end
+
+  def set_parent(new_parent)
+    @parent = new_parent
+    self
+  end
+
 
 end
