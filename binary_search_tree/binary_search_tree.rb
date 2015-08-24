@@ -26,5 +26,10 @@ class BSTNode
     self
   end
 
+  def set_value(new_value)
+    @value = new_value
+    self
+  end
+
 
 end

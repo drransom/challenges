@@ -93,4 +93,26 @@ describe BSTNode do
       end
     end
   end
+
+  context 'setting value' do
+    subject(:test_node) { BSTNode.new( value: 5 ) }
+
+    describe '#set_value' do
+      it 'sets the value' do
+        test_node.set_value(10)
+        expect(test_node.value).to eq(10)
+      end
+
+      it 'can set the value multiple times' do
+        test_node.set_value(10)
+        expect(test_node.value).to eq(10)
+        test_node.set_value(0)
+        expect(test_node.value).to eq(0)
+      end
+
+      it 'returns the node' do
+        expect(test_node.set_value(10)).to be(test_node)
+      end
+    end
+  end
 end
