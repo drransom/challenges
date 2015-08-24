@@ -2,12 +2,13 @@ class SelfBalancingBinarySearchTree
 end
 
 class BSTNode
-  attr_reader :left_child, :right_child, :parent
+  attr_reader :left_child, :right_child, :parent, :value
 
   def initialize(options = {})
     @left_child = options[:left_child]
     @right_child = options[:right_child]
     @parent = options[:parent]
+    @value = options[:value]
   end
 
   def set_left_child(new_child)
