@@ -1,9 +1,6 @@
 require 'rspec'
 require_relative 'binary_search_tree.rb'
 
-describe SelfBalancingBinarySearchTree do
-end
-
 describe BSTNode do
   context 'initialization' do
     let(:left) { double("BSTNode") }
