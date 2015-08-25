@@ -13,6 +13,33 @@ describe SelfBalancingBinarySearchTree do
       it 'returns the value added' do
         expect(tree.add_element(5)).to eq(5)
       end
+
+      it 'adds an element to the left' do
+        tree.add_element(5)
+        tree.add_element(4)
+        expect(tree.root.value).to eq(5)
+        expect(tree.root.left_child.value).to eq(4)
+        expect(tree.root.right_child.value).to eq(nil)
+      end
+
+      it 'adds an element to the right' do
+        tree.add_element(5)
+        tree.add_element(6)
+        expect(tree.root.value).to eq(5)
+        expect(tree.root.right_child.value).to eq(6)
+        expect(tree.root.left_child.value).to eq(nil)
+      end
+
+      it 'four elements' do
+        tree.add_element(5)
+        tree.add_element(10)
+        tree.add_element(4)
+        tree.add_element(6)
+        expect(tree.root.value).to eq(5)
+        expect(tree.root.right_child.value).to eq(6)
+        expect(tree.root.right_child.right_child.value).to eq(10)
+        expect(tree.root.left_child.value).to eq(4)
+      end
     end
   end
 end

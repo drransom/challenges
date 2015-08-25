@@ -1,11 +1,12 @@
 class SelfBalancingBinarySearchTree
+  attr_accessor :root
   def initialize
     @root = nil
   end
 
   def add_element(value)
     if !@root
-      @root = BSTNode.new({ value: value })
+      @root = BSTNode.new(value)
     end
     value
   end
