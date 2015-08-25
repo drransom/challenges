@@ -2,7 +2,7 @@ require 'rspec'
 require_relative 'binary_search_tree.rb'
 
 class MockBSTNode
-  def depth
+  def height
     0
   end
 
@@ -20,24 +20,13 @@ describe BSTNode do
 
     describe '#initialize' do
 
-      it 'can take left, right, and parent' do
-        options = { left_child: left_child, right_child: right_child, parent: parent, value: 5}
-        test_node = BSTNode.new(options)
-        expect(test_node.left_child).to eq(left_child)
-        expect(test_node.right_child).to eq(right_child)
-        expect(test_node.parent).to eq(parent)
+      it 'can take a value' do
+        test_node = BSTNode.new(5)
         expect(test_node.value).to eq(5)
       end
 
-      it 'can accept only some options' do
-        options = { left_child: left_child, parent: parent }
-        test_node = BSTNode.new(options)
-        expect(test_node.left_child).to eq(left_child)
-        expect(test_node.parent).to eq(parent)
-      end
-
-      it 'requires no options' do
-        expect {BSTNode.new}.to_not raise_error
+      it 'does not require a value' do
+        expect { BSTNode.new }.to_not raise_error
       end
     end
   end
@@ -125,6 +114,56 @@ describe BSTNode do
     end
   end
 
-  context 'depth and balance' do
+  context 'updating height and balance' do
+    subject(:node) { BSTNode.new }
+    let(:other_node) { double("BSTNode") }
+    let(:second_other_node) { double( "BSTNode" )}
+
+    describe 'initialization' do
+      it 'height is zero when initialized' do
+        expect(node.height).to eq(0)
+      end
+    end
+
+    describe 'updating parent and child' do
+
+      it 'updating the left child' do
+        allow(other_node).to receive(:height).and_return(0)
+        node.set_left_child(other_node)
+        expect(node.height).to eq(1)
+        expect(node.balance).to eq(1)
+      end
+
+      it 'updating the right child' do
+        allow(other_node).to receive(:height).and_return(0)
+        node.set_right_child(other_node)
+        expect(node.height).to eq(1)
+        expect(node.balance).to eq(-1)
+      end
+
+      it 'updating both sides' do
+        allow(other_node).to receive(:height).and_return(0)
+        allow(second_other_node).to receive(:height).and_return(0)
+        node.set_left_child(other_node)
+        node.set_right_child(second_other_node)
+        expect(node.height).to eq(1)
+        expect(node.balance).to eq(0)
+      end
+
+      it 'updating parent does not change height or balance' do
+        expect(other_node).to_not receive(:height)
+        node.set_parent(other_node)
+        expect(node.height).to eq(0)
+        expect(node.balance).to eq(0)
+      end
+
+    end
+
+    describe '#balance' do
+      it 'is zero when initialized with nothing' do
+        test = BSTNode.new
+        expect(test.balance).to eq(0)
+      end
+    end
   end
 end

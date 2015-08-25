@@ -1,35 +1,42 @@
 class SelfBalancingBinarySearchTree
   def initialize
-    @head = nil
+    @root = nil
   end
 
   def add_element(value)
-    if !@head
-      @head = BSTNode.new({ value: value })
+    if !@root
+      @root = BSTNode.new({ value: value })
     end
     value
+  end
+
+  def height
+    @root ? root.height : -1
   end
 end
 
 class BSTNode
-  attr_reader :left_child, :right_child, :parent, :value, :balance
+  attr_reader :left_child, :right_child, :parent, :value, :height, :balance
 
-  def initialize(options = {})
-    @left_child = options[:left_child] || NullBSTNode.new
-    @right_child = options[:right_child] || NullBSTNode.new
-    @parent = options[:parent]
-    @value = options[:value]
-    @balance = @right_child.depth - @left_child.depth
-    @depth = [@left_child.depth, @right_child.depth].max
+  def initialize(value = nil)
+    @value = value
+    @left_child = NullBSTNode.new
+    @right_child = NullBSTNode.new
+    @balance = 0
+    @height = 0
   end
 
   def set_left_child(new_child)
     @left_child = new_child
+    update_height
+    update_balance
     self
   end
 
   def set_right_child(new_child)
     @right_child = new_child
+    update_height
+    update_balance
     self
   end
 
@@ -45,8 +52,20 @@ class BSTNode
 
   private
 
+  def update_balance
+    @balance = @left_child.height - @right_child.height
+  end
+
+  def update_height
+    @height = [@left_child.height, @right_child.height].max + 1
+  end
+
+  def balanced?
+    @balance.abs <= 1
+  end
+
   class NullBSTNode
-    def depth
+    def height
       -1
     end
 
