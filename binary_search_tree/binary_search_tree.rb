@@ -18,7 +18,7 @@ class SelfBalancingBinarySearchTree
   end
 
   def find_data(value)
-    root ? root.find_data(value) : nil
+    root ? root.find_node(value).data : nil
   end
 
 end
@@ -70,14 +70,14 @@ class BSTNode
     self
   end
 
-  def find_data(query_value)
+  def find_node(query_value)
 
     if value == query_value
-      data
+      self
     elsif query_value < value
-      left_child.find_data(query_value)
+      left_child.find_node(query_value)
     else
-      right_child.find_data(query_value)
+      right_child.find_node(query_value)
     end
   end
 
@@ -113,8 +113,12 @@ class BSTNode
       nil
     end
 
-    def find_data(query_value)
+    def data
       nil
+    end
+
+    def find_node(query_value)
+      self
     end
 
   end
