@@ -73,6 +73,29 @@ describe SelfBalancingBinarySearchTree do
       end
     end
 
+    describe '#include?' do
+
+      it 'can find an included element' do
+        letters = ('a'..'k').to_a
+        values = (0..10).to_a.zip(letters)
+        (0..10).to_a.zip('a'..'k').shuffle.to_h.each do |value, data|
+          tree.add_element(value, data)
+        end
+        11.times do |i|
+          expect(tree.include?(i)).to be_truthy
+        end
+      end
+
+      it 'does not find an element that is not included' do
+        letters = ('a'..'f').to_a
+        (0..5).to_a.shuffle.each do |num|
+          tree.add_element(num, letters[num])
+        end
+        expect(tree.include?(6)).to be_falsy
+      end
+
+    end
+
 
   end
 end

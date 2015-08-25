@@ -1,11 +1,11 @@
 class SelfBalancingBinarySearchTree
   attr_accessor :root
   def initialize
-    @root = nil
+    @root = NullBSTNode.new
   end
 
   def add_element(value, data = nil)
-    if !@root
+    if root.is_a?(NullBSTNode)
       @root = BSTNode.new(value, data)
     else
       new_node = @root.find_and_create_node_for(value, data)
@@ -14,11 +14,15 @@ class SelfBalancingBinarySearchTree
   end
 
   def height
-    @root ? root.height : -1
+    root.height
   end
 
   def find_data(value)
-    root ? root.find_node(value).data : nil
+    root.find_node(value).data
+  end
+
+  def include?(value)
+    !root.find_node(value).is_a?(NullBSTNode)
   end
 
 end
@@ -100,26 +104,27 @@ class BSTNode
     @balance.abs <= 1
   end
 
-  class NullBSTNode
-    def height
-      -1
-    end
+end
 
-    def balance
-      0
-    end
-
-    def value
-      nil
-    end
-
-    def data
-      nil
-    end
-
-    def find_node(query_value)
-      self
-    end
-
+class NullBSTNode
+  def height
+    -1
   end
+
+  def balance
+    0
+  end
+
+  def value
+    nil
+  end
+
+  def data
+    nil
+  end
+
+  def find_node(query_value)
+    self
+  end
+
 end
