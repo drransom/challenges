@@ -10,6 +10,7 @@ class SelfBalancingBinarySearchTree
     else
       new_node = @root.find_and_create_node_for(value, data)
     end
+    value
   end
 
   def height
@@ -48,8 +49,16 @@ class BSTNode
   end
 
 
-  def find_and_create_node_for(key, data = nil)
-
+  def find_and_create_node_for(new_value, data = nil)
+    side = new_value < value ? "left" : "right"
+    node = self.send((side + "_child"))
+    if node.is_a?(NullBSTNode)
+      new_node = BSTNode.new(new_value, data)
+      new_node.set_parent(self)
+      self.send("set_" + side + "_child", new_node)
+    else
+      node.find_and_create_node_for(new_value, data)
+    end
   end
 
   def set_data(new_data)
@@ -86,5 +95,6 @@ class BSTNode
     def value
       nil
     end
+
   end
 end

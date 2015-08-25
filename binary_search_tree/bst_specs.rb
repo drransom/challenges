@@ -37,7 +37,8 @@ describe SelfBalancingBinarySearchTree do
         tree.add_element(6)
         expect(tree.root.value).to eq(5)
         expect(tree.root.right_child.value).to eq(10)
-        expect(tree.root.right_child.right_child.value).to eq(6)
+        expect(tree.root.right_child.left_child.value).to eq(6)
+        expect(tree.root.right_child.right_child.value).to eq(nil)
         expect(tree.root.left_child.value).to eq(4)
       end
     end
