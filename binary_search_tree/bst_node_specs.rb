@@ -20,13 +20,14 @@ describe BSTNode do
 
     describe '#initialize' do
 
-      it 'can take a value' do
-        test_node = BSTNode.new(5)
+      it 'can take a value and data' do
+        test_node = BSTNode.new(5, 10)
         expect(test_node.value).to eq(5)
+        expect(test_node.data).to eq(10)
       end
 
-      it 'does not require a value' do
-        expect { BSTNode.new }.to_not raise_error
+      it 'does not require data' do
+        expect { BSTNode.new(5) }.to_not raise_error
       end
     end
   end
@@ -35,7 +36,7 @@ describe BSTNode do
     let(:other_node) { MockBSTNode.new }
     let(:other_node_2) { MockBSTNode.new }
 
-    subject(:test_node) { BSTNode.new }
+    subject(:test_node) { BSTNode.new(0) }
 
     describe '#set_left_child' do
       it 'sets the child' do
@@ -92,30 +93,30 @@ describe BSTNode do
     end
   end
 
-  context 'setting value' do
-    subject(:test_node) { BSTNode.new( value: 5 ) }
+  context 'setting data' do
+    subject(:test_node) { BSTNode.new(5) }
 
-    describe '#set_value' do
-      it 'sets the value' do
-        test_node.set_value(10)
-        expect(test_node.value).to eq(10)
+    describe '#set_data' do
+      it 'sets the data' do
+        test_node.set_data(10)
+        expect(test_node.data).to eq(10)
       end
 
-      it 'can set the value multiple times' do
-        test_node.set_value(10)
-        expect(test_node.value).to eq(10)
-        test_node.set_value(0)
-        expect(test_node.value).to eq(0)
+      it 'can set the data multiple times' do
+        test_node.set_data(10)
+        expect(test_node.data).to eq(10)
+        test_node.set_data(0)
+        expect(test_node.data).to eq(0)
       end
 
       it 'returns the node' do
-        expect(test_node.set_value(10)).to be(test_node)
+        expect(test_node.set_data(10)).to be(test_node)
       end
     end
   end
 
   context 'updating height and balance' do
-    subject(:node) { BSTNode.new }
+    subject(:node) { BSTNode.new(0) }
     let(:other_node) { double("BSTNode") }
     let(:second_other_node) { double( "BSTNode" )}
 
@@ -161,7 +162,7 @@ describe BSTNode do
 
     describe '#balance' do
       it 'is zero when initialized with nothing' do
-        test = BSTNode.new
+        test = BSTNode.new(0)
         expect(test.balance).to eq(0)
       end
     end
