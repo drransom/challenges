@@ -95,7 +95,49 @@ describe SelfBalancingBinarySearchTree do
       end
 
     end
-
-
   end
+
+  context 'enumeration' do
+    subject(:tree) { SelfBalancingBinarySearchTree.new}
+
+    before(:each) do
+      letters = ('a'..'k').to_a
+      values = (0..10).to_a
+      letters.zip(values).shuffle.to_h.each do |value, data|
+        tree.add_element(value, data)
+      end
+    end
+
+    describe '#to_a' do
+      it 'empty list' do
+        expect(SelfBalancingBinarySearchTree.new.to_a).to be_empty
+      end
+
+      it 'puts elements in the array in the correct order' do
+        letters = ('a'..'k').to_a
+        tree.to_a.each_with_index do |node, idx|
+          expect(node.value).to eq(letters[idx])
+          expect(node.data).to eq(idx)
+        end
+      end
+    end
+
+    describe '#each' do
+      it 'returns an enumerator if no block given' do
+        expect(tree.each).to be_a(Enumerator)
+      end
+
+      it 'can map over each' do
+        concat = ''
+        sum = 0
+        tree.each do |value, data|
+          concat += value
+          sum += data
+        end
+        expect(concat).to eq('abcdefghijk')
+        expect(sum).to eq(55)
+      end
+    end
+  end
+
 end

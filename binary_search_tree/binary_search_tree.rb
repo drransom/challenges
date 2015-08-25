@@ -25,6 +25,18 @@ class SelfBalancingBinarySearchTree
     !root.find_node(value).is_a?(NullBSTNode)
   end
 
+  def each
+    return enum_for(:each) unless block_given?
+    self.to_a.each do |node|
+      yield(node.value, node.data)
+    end
+  end
+
+  def to_a
+    output = []
+    root.push_values(output)
+  end
+
 end
 
 class BSTNode
@@ -56,7 +68,6 @@ class BSTNode
     self
   end
 
-
   def find_and_create_node_for(new_value, data = nil)
     side = new_value < value ? "left" : "right"
     node = self.send((side + "_child"))
@@ -85,6 +96,22 @@ class BSTNode
     end
   end
 
+  def push_values(output)
+    @left_child.push_values(output) if has_left_child?
+    output << self
+    @right_child.push_values(output) if has_right_child?
+    output
+  end
+
+
+  def has_left_child?
+    @left_child.is_a?(BSTNode)
+  end
+
+  def has_right_child?
+    @right_child.is_a?(BSTNode)
+  end
+
 
   protected
 
@@ -103,6 +130,7 @@ class BSTNode
   def balanced?
     @balance.abs <= 1
   end
+
 
 end
 
@@ -125,6 +153,10 @@ class NullBSTNode
 
   def find_node(query_value)
     self
+  end
+
+  def push_values(output)
+    output
   end
 
 end
