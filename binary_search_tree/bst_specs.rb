@@ -10,8 +10,10 @@ describe SelfBalancingBinarySearchTree do
         expect(tree).to respond_to(:add_element)
       end
 
-      it 'returns the value added' do
-        expect(tree.add_element(5)).to eq(5)
+      it 'returns the node added' do
+        new_node = tree.add_element(5)
+        expect(new_node).to be_a(BSTNode)
+        expect(new_node.value).to eq(5)
       end
 
       it 'adds an element to the left' do
@@ -137,6 +139,27 @@ describe SelfBalancingBinarySearchTree do
         expect(concat).to eq('abcdefghijk')
         expect(sum).to eq(55)
       end
+    end
+  end
+
+  context 'rebalancing' do
+    subject(:tree) { SelfBalancingBinarySearchTree.new }
+
+    describe '#add_element' do
+      it 'simple case' do
+        expected_left = tree.add_element(0, 'a')
+        expected_root = tree.add_element(1, 'b')
+        expected_right = tree.add_element(2, 'c')
+        expect(tree.root.height).to eq(1)
+        expect(tree.root.value).to eq(expected_root.value)
+        expect(tree.root.data).to eq(expected_root.data)
+        expect(tree.root.left_child.value).to eq(expected_left.value)
+        expect(tree.root.left_child.data).to eq(expected_left.data)
+        expect(tree.root.right_child.value).to eq(expected_right.value)
+        expect(tree.root.right_child.data).to eq(expected_right.data)
+      end
+
+
     end
   end
 

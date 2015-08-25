@@ -124,6 +124,8 @@ class BSTNode
     @balance = @left_child.height - @right_child.height
     @height = [@left_child.height, @right_child.height].max + 1
 
+    rebalance! unless balanced?
+
     @parent.update_height_and_balance! if @parent
   end
 
@@ -131,6 +133,13 @@ class BSTNode
     @balance.abs <= 1
   end
 
+  def rebalance!
+    if @balance > 1
+
+
+    elsif @balance < 1
+    end
+  end
 
 end
 
