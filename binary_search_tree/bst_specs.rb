@@ -146,10 +146,23 @@ describe SelfBalancingBinarySearchTree do
     subject(:tree) { SelfBalancingBinarySearchTree.new }
 
     describe '#add_element' do
-      it 'simple case' do
+      it 'simple right side case' do
         expected_left = tree.add_element(0, 'a')
         expected_root = tree.add_element(1, 'b')
         expected_right = tree.add_element(2, 'c')
+        expect(tree.root.height).to eq(1)
+        expect(tree.root.value).to eq(expected_root.value)
+        expect(tree.root.data).to eq(expected_root.data)
+        expect(tree.root.left_child.value).to eq(expected_left.value)
+        expect(tree.root.left_child.data).to eq(expected_left.data)
+        expect(tree.root.right_child.value).to eq(expected_right.value)
+        expect(tree.root.right_child.data).to eq(expected_right.data)
+      end
+
+      it 'simple left side case' do
+        expected_right = tree.add_element(0, 'a')
+        expected_root = tree.add_element(-1, 'b')
+        expected_left = tree.add_element(-2, 'c')
         expect(tree.root.height).to eq(1)
         expect(tree.root.value).to eq(expected_root.value)
         expect(tree.root.data).to eq(expected_root.data)

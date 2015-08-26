@@ -17,17 +17,18 @@ describe BSTNode do
     let(:left_child) { MockBSTNode.new }
     let(:right_child) { MockBSTNode.new }
     let(:parent) { MockBSTNode.new }
+    let(:tree) { double("SelfBalancingBinarySearchTree")}
 
     describe '#initialize' do
 
       it 'can take a value and data' do
-        test_node = BSTNode.new(5, 10)
+        test_node = BSTNode.new(tree, 5, 10)
         expect(test_node.value).to eq(5)
         expect(test_node.data).to eq(10)
       end
 
       it 'does not require data' do
-        expect { BSTNode.new(5) }.to_not raise_error
+        expect { BSTNode.new(tree, 5) }.to_not raise_error
       end
     end
   end
@@ -35,8 +36,9 @@ describe BSTNode do
   context 'setting other nodes' do
     let(:other_node) { MockBSTNode.new }
     let(:other_node_2) { MockBSTNode.new }
+    let(:tree) { double("SelfBalancingBinarySearchTree") }
 
-    subject(:test_node) { BSTNode.new(0) }
+    subject(:test_node) { BSTNode.new(tree, 0) }
 
     describe '#set_left_child' do
       it 'sets the child' do
@@ -94,7 +96,8 @@ describe BSTNode do
   end
 
   context 'setting data' do
-    subject(:test_node) { BSTNode.new(5) }
+    let(:tree) { double("SelfBalancingBinarySearchTree") }
+    subject(:test_node) { BSTNode.new(tree, 5) }
 
     describe '#set_data' do
       it 'sets the data' do
@@ -116,7 +119,8 @@ describe BSTNode do
   end
 
   context 'updating height and balance' do
-    subject(:node) { BSTNode.new(0) }
+    let(:tree) { double("SelfBalancingBinarySearchTree") }
+    subject(:node) { BSTNode.new(tree, 0) }
     let(:other_node) { double("BSTNode") }
     let(:second_other_node) { double( "BSTNode" )}
 
@@ -161,8 +165,9 @@ describe BSTNode do
     end
 
     describe '#balance' do
+      let(:tree) { double("SelfBalancingBinarySearchTree") }
       it 'is zero when initialized with nothing' do
-        test = BSTNode.new(0)
+        test = BSTNode.new(tree, 0)
         expect(test.balance).to eq(0)
       end
     end

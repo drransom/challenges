@@ -1,3 +1,5 @@
+require 'byebug'
+
 class SelfBalancingBinarySearchTree
   attr_accessor :root
   def initialize
@@ -6,11 +8,12 @@ class SelfBalancingBinarySearchTree
 
   def add_element(value, data = nil)
     if root.is_a?(NullBSTNode)
-      @root = BSTNode.new(value, data)
+      new_node = BSTNode.new(self, value, data)
+      @root = new_node
     else
       new_node = @root.find_and_create_node_for(value, data)
     end
-    value
+    new_node
   end
 
   def height
@@ -37,12 +40,19 @@ class SelfBalancingBinarySearchTree
     root.push_values(output)
   end
 
+  def possibly_change_root!(possible_old_root, possible_new_root)
+     @root = possible_new_root if @root == possible_old_root
+   end
+
+
+
 end
 
 class BSTNode
   attr_reader :left_child, :right_child, :parent, :value, :height, :balance, :data
 
-  def initialize(value, data = nil)
+  def initialize(tree, value, data = nil)
+    @tree = tree
     @value = value
     @data = data
     @left_child = NullBSTNode.new
@@ -51,16 +61,16 @@ class BSTNode
     @height = 0
   end
 
-  def set_left_child(new_child)
+  def set_left_child(new_child, options = {})
     @left_child = new_child
-    update_height_and_balance!
-    self
+    update_height_and_balance! unless options[:avoid_rebalance]
+    new_child
   end
 
-  def set_right_child(new_child)
+  def set_right_child(new_child, options = {})
     @right_child = new_child
-    update_height_and_balance!
-    self
+    update_height_and_balance! unless options[:avoid_rebalance]
+    new_child
   end
 
   def set_parent(new_parent)
@@ -72,7 +82,7 @@ class BSTNode
     side = new_value < value ? "left" : "right"
     node = self.send((side + "_child"))
     if node.is_a?(NullBSTNode)
-      new_node = BSTNode.new(new_value, data)
+      new_node = BSTNode.new(@tree, new_value, data)
       new_node.set_parent(self)
       self.send("set_" + side + "_child", new_node)
     else
@@ -103,7 +113,6 @@ class BSTNode
     output
   end
 
-
   def has_left_child?
     @left_child.is_a?(BSTNode)
   end
@@ -112,6 +121,31 @@ class BSTNode
     @right_child.is_a?(BSTNode)
   end
 
+  def rotate_right!
+    new_parent = left_child
+    old_parent = parent
+    new_left = new_parent.right_child
+
+    new_parent.set_parent(old_parent)
+    set_parent(new_parent)
+    set_left_child(new_left, avoid_rebalance: true)
+    new_parent.set_right_child(self, avoid_rebalance: true)
+
+    @tree.possibly_change_root!(self, new_parent)
+  end
+
+  def rotate_left!
+    new_parent = right_child
+    old_parent = parent
+    new_right = new_parent.left_child
+
+    new_parent.set_parent(old_parent)
+    set_parent(new_parent)
+    set_right_child(new_right, avoid_rebalance: true)
+    new_parent.set_left_child(self, avoid_rebalance: true)
+
+    @tree.possibly_change_root!(self, new_parent)
+  end
 
   protected
 
@@ -120,13 +154,13 @@ class BSTNode
     self
   end
 
-  def update_height_and_balance!
+  def update_height_and_balance!(options = {})
     @balance = @left_child.height - @right_child.height
     @height = [@left_child.height, @right_child.height].max + 1
 
-    rebalance! unless balanced?
+    rebalance! unless balanced? || options[:avoid_rebalance]
 
-    @parent.update_height_and_balance! if @parent
+    @parent.update_height_and_balance!(options) if @parent && !options[:avoid_rebalance]
   end
 
   def balanced?
@@ -135,10 +169,11 @@ class BSTNode
 
   def rebalance!
     if @balance > 1
-
-
+      rotate_right!
     elsif @balance < 1
+      rotate_left!
     end
+    update_height_and_balance!(avoid_rebalance: true)
   end
 
 end
