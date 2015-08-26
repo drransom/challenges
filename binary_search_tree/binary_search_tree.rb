@@ -63,12 +63,14 @@ class BSTNode
 
   def set_left_child(new_child, options = {})
     @left_child = new_child
+    new_child.update_height_and_balance!(avoid_rebalance: true)
     update_height_and_balance! unless options[:avoid_rebalance]
     new_child
   end
 
   def set_right_child(new_child, options = {})
     @right_child = new_child
+    new_child.update_height_and_balance!(avoid_rebalance: true)
     update_height_and_balance! unless options[:avoid_rebalance]
     new_child
   end
@@ -131,6 +133,8 @@ class BSTNode
     set_left_child(new_left, avoid_rebalance: true)
     new_parent.set_right_child(self, avoid_rebalance: true)
 
+    update_old_parent!(old_parent, new_parent)
+
     @tree.possibly_change_root!(self, new_parent)
   end
 
@@ -144,7 +148,20 @@ class BSTNode
     set_right_child(new_right, avoid_rebalance: true)
     new_parent.set_left_child(self, avoid_rebalance: true)
 
+    update_old_parent!(old_parent, new_parent)
+
+
     @tree.possibly_change_root!(self, new_parent)
+  end
+
+  def update_old_parent!(old_parent, new_parent)
+    if old_parent
+      if old_parent.right_child == self
+        old_parent.set_right_child(new_parent, avoid_rebalance: true)
+      elsif old_parent.left_child == self
+        old_parent.set_left_child(new_parent, avoid_rebalance: true)
+      end
+    end
   end
 
   protected
@@ -171,6 +188,7 @@ class BSTNode
     if @balance > 1
       rotate_right!
     elsif @balance < 1
+      right_child.rotate_right! if right_child.balance > 0
       rotate_left!
     end
     update_height_and_balance!(avoid_rebalance: true)
@@ -201,6 +219,9 @@ class NullBSTNode
 
   def push_values(output)
     output
+  end
+
+  def update_height_and_balance!(options = {})
   end
 
 end
