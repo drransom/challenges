@@ -16,6 +16,34 @@ class SelfBalancingBinarySearchTree
     new_node
   end
 
+  def display_values
+    current_row = [@root]
+    next_row = []
+    empty = false
+
+    until empty
+      height = current_row.map { |node| (node ? node.height : -1) }.max
+      separator = ' ' * (2 ** (height + 1))
+      empty = true
+      output_string = ''
+      current_row.each do |node|
+        if node && (node.has_left_child? || node.has_right_child?)
+          empty = false
+        end
+        next_row << (node ? node.left_child : nil)
+        next_row << (node ? node.right_child : nil)
+      end
+
+      output_string = current_row.inject(separator) do |memo, node|
+        memo + (node && node.value ? node.value.to_s : " ") + separator
+      end
+
+      puts output_string
+      current_row = next_row
+      next_row = []
+    end
+  end
+
   def height
     root.height
   end
@@ -42,9 +70,7 @@ class SelfBalancingBinarySearchTree
 
   def possibly_change_root!(possible_old_root, possible_new_root)
      @root = possible_new_root if @root == possible_old_root
-   end
-
-
+  end
 
 end
 
@@ -134,6 +160,7 @@ class BSTNode
     new_parent.set_right_child(self, avoid_rebalance: true)
 
     update_old_parent!(old_parent, new_parent)
+    new_left.set_parent(self)
 
     @tree.possibly_change_root!(self, new_parent)
   end
@@ -146,10 +173,10 @@ class BSTNode
     new_parent.set_parent(old_parent)
     set_parent(new_parent)
     set_right_child(new_right, avoid_rebalance: true)
+    new_right.set_parent(self)
     new_parent.set_left_child(self, avoid_rebalance: true)
 
     update_old_parent!(old_parent, new_parent)
-
 
     @tree.possibly_change_root!(self, new_parent)
   end
@@ -186,6 +213,7 @@ class BSTNode
 
   def rebalance!
     if @balance > 1
+      left_child.rotate_left! if left_child.balance < 0
       rotate_right!
     elsif @balance < 1
       right_child.rotate_right! if right_child.balance > 0
@@ -222,6 +250,25 @@ class NullBSTNode
   end
 
   def update_height_and_balance!(options = {})
+  end
+
+  def has_left_child?
+    false
+  end
+
+  def has_right_child?
+    false
+  end
+
+  def left_child
+    nil
+  end
+
+  def right_child
+    nil
+  end
+
+  def set_parent(node)
   end
 
 end

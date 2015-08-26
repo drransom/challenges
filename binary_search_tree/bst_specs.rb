@@ -1,6 +1,14 @@
 require 'rspec'
 require_relative 'binary_search_tree.rb'
 
+def add_at_random(tree)
+  letters = ('a'..'k').to_a
+  values = (0..10).to_a
+  values.zip(letters).shuffle.to_h.each do |value, data|
+    tree.add_element(value, data)
+  end
+end
+
 describe SelfBalancingBinarySearchTree do
   context 'inserting nodes' do
     subject(:tree) { SelfBalancingBinarySearchTree.new }
@@ -57,12 +65,12 @@ describe SelfBalancingBinarySearchTree do
 
       it 'can find the correct data in the list' do
         letters = ('a'..'k').to_a
-        values = (0..10).to_a.zip(letters)
-        (0..10).to_a.zip('a'..'k').shuffle.to_h.each do |value, data|
-          tree.add_element(value, data)
-        end
-        11.times do |i|
-          expect(tree.find_data(i)).to eq(letters[i])
+        10.times do
+          tree = SelfBalancingBinarySearchTree.new
+          add_at_random(tree)
+          11.times do |i|
+            expect(tree.find_data(i)).to eq(letters[i])
+          end
         end
       end
 
@@ -80,11 +88,12 @@ describe SelfBalancingBinarySearchTree do
       it 'can find an included element' do
         letters = ('a'..'k').to_a
         values = (0..10).to_a.zip(letters)
-        (0..10).to_a.zip('a'..'k').shuffle.to_h.each do |value, data|
-          tree.add_element(value, data)
-        end
-        11.times do |i|
-          expect(tree.include?(i)).to be_truthy
+        10.times do
+          tree = SelfBalancingBinarySearchTree.new
+          add_at_random(tree)
+          11.times do |i|
+            expect(tree.include?(i)).to be_truthy
+          end
         end
       end
 
@@ -100,15 +109,7 @@ describe SelfBalancingBinarySearchTree do
   end
 
   context 'enumeration' do
-    subject(:tree) { SelfBalancingBinarySearchTree.new}
 
-    before(:each) do
-      letters = ('a'..'k').to_a
-      values = (0..10).to_a
-      letters.zip(values).shuffle.to_h.each do |value, data|
-        tree.add_element(value, data)
-      end
-    end
 
     describe '#to_a' do
       it 'empty list' do
@@ -117,27 +118,36 @@ describe SelfBalancingBinarySearchTree do
 
       it 'puts elements in the array in the correct order' do
         letters = ('a'..'k').to_a
-        tree.to_a.each_with_index do |node, idx|
-          expect(node.value).to eq(letters[idx])
-          expect(node.data).to eq(idx)
+        10.times do
+          tree = SelfBalancingBinarySearchTree.new
+          add_at_random(tree)
+          tree.to_a.each_with_index do |node, idx|
+            expect(node.value).to eq(idx)
+            expect(node.data).to eq(letters[idx])
+          end
         end
       end
     end
 
     describe '#each' do
       it 'returns an enumerator if no block given' do
+        tree = SelfBalancingBinarySearchTree.new
         expect(tree.each).to be_a(Enumerator)
       end
 
       it 'can map over each' do
-        concat = ''
-        sum = 0
-        tree.each do |value, data|
-          concat += value
-          sum += data
+        10.times do
+          tree = SelfBalancingBinarySearchTree.new
+          add_at_random(tree)
+          concat = ''
+          sum = 0
+          tree.each do |value, data|
+            concat += data
+            sum += value
+          end
+          expect(concat).to eq('abcdefghijk')
+          expect(sum).to eq(55)
         end
-        expect(concat).to eq('abcdefghijk')
-        expect(sum).to eq(55)
       end
     end
   end
@@ -197,8 +207,6 @@ describe SelfBalancingBinarySearchTree do
         expect(tree.root.right_child.value).to eq(expected_right.value)
         expect(tree.root.right_child.data).to eq(expected_right.data)
       end
-
-
     end
   end
 
