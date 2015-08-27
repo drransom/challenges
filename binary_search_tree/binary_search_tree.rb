@@ -181,14 +181,17 @@ class BSTNode
     @tree.possibly_change_root!(self, new_parent)
   end
 
-  def update_old_parent!(old_parent, new_parent)
-    if old_parent
-      if old_parent.right_child == self
-        old_parent.set_right_child(new_parent, avoid_rebalance: true)
-      elsif old_parent.left_child == self
-        old_parent.set_left_child(new_parent, avoid_rebalance: true)
-      end
+  def replace_child(old_child, new_child, options = {})
+    case old_child
+    when left_child
+      set_left_child(new_child, options)
+    when right_child
+      set_right_child(new_child, options)
     end
+  end
+
+  def update_old_parent!(old_parent, new_parent)
+    old_parent.replace_child(self, new_parent, avoid_rebalance: true) if old_parent
   end
 
   protected
