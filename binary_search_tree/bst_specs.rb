@@ -60,10 +60,34 @@ describe SelfBalancingBinarySearchTree do
         expect(tree.root).to eq(nil)
       end
 
-      it 'can delete an element on the left' do
+      it 'can delete an element on the right' do
         tree.add_element(0)
         tree.add_element(1, 3)
         tree.delete(1)
+        expect(tree.root.right_child.value).to eq(nil)
+        expect(tree.root.right_child.data).to eq(nil)
+      end
+
+      it 'deleting a node resets the height' do
+        tree.add_element(0)
+        tree.add_element(1)
+        tree.delete(1)
+        expect(tree.root.height).to eq(0)
+      end
+
+      it 'deleting a node resets the balance' do
+        tree.add_element(0)
+        tree.add_element(-1)
+        tree.delete(-1)
+        expect(tree.root.balance).to eq(0)
+      end
+
+      it 'can delete the root with one child' do
+        tree.add_element(0)
+        tree.add_element(1, 3)
+        tree.delete(0)
+        expect(tree.root.value).to eq(1)
+        expect(tree.root.data).to eq(3)
         expect(tree.root.right_child.value).to eq(nil)
         expect(tree.root.right_child.data).to eq(nil)
       end

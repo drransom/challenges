@@ -191,15 +191,20 @@ class BSTNode
   end
 
   def delete!
-    children = [left_child, @ight_child].select { |child| child.is_a?(BSTNode) }
-    case children.length
-    when 0
+    children = [left_child, right_child].select { |child| child.is_a?(BSTNode) }
+    if children.length == 0
       destroy_self!
-    when 1
+    elsif children.length == 1 && parent
       replace_self_with_child(children[0])
-    when 2
+    elsif children.length == 1
+      replace_info_and_remove_old_leaf(children[0])
+    else
       elevate_leaf_from_bottom!
     end
+  end
+
+  def has_child?
+    left_child.is_a?(BSTNode) || right_child.is_a?(BSTNode)
   end
 
   protected
@@ -209,28 +214,24 @@ class BSTNode
     destroy_self!
   end
 
-  def replace_data_and_remove_old_leaf(other_node)
-    replace_data_with(other_node)
+  def replace_info_and_remove_old_leaf(other_node)
+    replace_info_with(other_node)
     other_node.destroy!
   end
 
   def destroy!
-    if @left_child.is_a?(BSTNode) || @right_child.is_a?(BSTNode)
-      raise 'cannot delete a node with children'
-    else
-      if parent
-        parent.replace_child(self, NullBSTNode.new)
-      else #should mean that the node is the root
-        @tree.possibly_change_root!(self, nil)
-      end
+    if parent
+      parent.replace_child(self, NullBSTNode.new) if parent
+    elsif !has_child? #should mean that the tree is empty
+      @tree.possibly_change_root!(self, nil)
+    end
       #clear pointers to other objects
       @value, @data, @parent, @left_child, @right_child = nil, nil, nil, nil, nil
-    end
   end
 
-  def replace_data_with(other_node)
-    value = other_node.value
-    data = other_node.data
+  def replace_info_with(other_node)
+    @value = other_node.value
+    @data = other_node.data
   end
 
 
