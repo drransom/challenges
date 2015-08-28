@@ -24,9 +24,13 @@ describe SortStack do
     end
 
     it 'push returns the pushed value' do
-      expect(stack.push).to eq(5)
+      expect(stack.push(5)).to eq(5)
     end
 
+    it '#<< aliases #push' do
+      stack << 3
+      expect(stack.peek).to eq(3)
+    end
   end
 
   describe '#pop' do
@@ -54,7 +58,6 @@ describe SortStack do
     end
   end
 
-
   describe 'push and pop together' do
     subject(:stack) { SortStack.new }
 
@@ -62,7 +65,7 @@ describe SortStack do
       stack.push(5)
       stack.push(3)
       stack.pop
-      expect(stack.peek).to eq(3)
+      expect(stack.peek).to eq(5)
     end
 
     it 'push, then pop, then push' do
@@ -100,12 +103,12 @@ describe SortStack do
     subject(:stack) { SortStack.new }
 
     it 'empty stack' do
-      expect(stack.empty?).to be_falsy
+      expect(stack.empty?).to be_truthy
     end
 
     it 'not empty' do
       stack.push(1)
-      expect(stack.empty?).to be_truthy
+      expect(stack.empty?).to be_falsy
     end
 
     it 'add and remove elements' do
@@ -113,7 +116,7 @@ describe SortStack do
       stack.push(3)
       stack.pop
       stack.pop
-      expect(stack.empty?).to be_falsy
+      expect(stack.empty?).to be_truthy
     end
   end
 
@@ -157,7 +160,7 @@ describe SortStack do
 
     it 'stacks not equal' do
       stack.push(3)
-      expect(stack == other_stack).to_not eq(other_stack.hash)
+      expect(stack.hash).to_not eq(other_stack.hash)
     end
 
     it 'stacks changed to be equal' do
@@ -165,7 +168,7 @@ describe SortStack do
       stack.push(3)
       stack.pop
       other_stack.push(5)
-      expect(stack == other_stack).to eq(other_stack.hash)
+      expect(stack.hash).to eq(other_stack.hash)
     end
 
     it 'nonempty nonequal stacks' do
@@ -175,7 +178,5 @@ describe SortStack do
       expect(stack == other_stack).to_not eq(other_stack.hash)
     end
   end
-
-  
 
 end
