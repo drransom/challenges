@@ -199,7 +199,8 @@ class BSTNode
     elsif children.length == 1
       replace_info_and_remove_old_leaf(children[0])
     else
-      elevate_leaf_from_bottom!
+      child = (balance >= 0) ? left_child : right_child
+      elevate_leaf_from_bottom!(child)
     end
   end
 
@@ -208,6 +209,24 @@ class BSTNode
   end
 
   protected
+
+  def elevate_leaf_from_bottom!(child)
+    case child
+    when left_child
+      replacement = child.find_highest_below
+    when right_child
+      replacement = child.find_lowest_below
+    end
+    replace_info_and_remove_old_leaf(replacement)
+  end
+
+  def find_lowest_below
+    has_left_child? ? left_child.find_lowest_below : self
+  end
+
+  def find_highest_below
+    has_right_child? ? right_child.find_highest_below : self
+  end
 
   def replace_self_with_child(child)
     parent.replace_child(self, child)

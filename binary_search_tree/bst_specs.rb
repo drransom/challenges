@@ -91,6 +91,48 @@ describe SelfBalancingBinarySearchTree do
         expect(tree.root.right_child.value).to eq(nil)
         expect(tree.root.right_child.data).to eq(nil)
       end
+
+      it 'can delete the root with two children' do
+        tree.add_element(0)
+        tree.add_element(1, 5)
+        tree.add_element(-1, 5)
+        tree.delete(0)
+        expect(tree.root.value.abs).to eq(1)
+        expect(tree.root.data).to eq(5)
+        expect(tree.root.height).to eq(1)
+        expect(tree.root.balance.abs).to eq(1)
+      end
+
+      it 'can delete an intermediate left node with two children' do
+        tree.add_element(0)
+        tree.add_element(-2, 0)
+        tree.add_element(2)
+        tree.add_element(-4, 10)
+        tree.add_element(-1, 10)
+
+        tree.delete(-2)
+        left_child = tree.root.left_child
+        expect(left_child.value == -1 || left_child.value == -4).to eq(true)
+        expect(left_child.data).to eq(10)
+        expect(tree.root.left_child.parent.value).to eq(0)
+        expect(left_child.height).to eq(1)
+      end
+
+      it 'can delete an intermediate right node with two children' do
+        tree.add_element(0)
+        tree.add_element(2, 0)
+        tree.add_element(-2)
+        tree.add_element(4, 10)
+        tree.add_element(1, 10)
+
+        tree.delete(2)
+        right_child = tree.root.right_child
+        expect(right_child.value == 4 || right_child.value == 1).to eq(true)
+        expect(right_child.data).to eq(10)
+        expect(tree.root.right_child.parent.value).to eq(0)
+        expect(right_child.height).to eq(1)
+      end
+
     end
   end
 
