@@ -72,6 +72,12 @@ class SelfBalancingBinarySearchTree
      @root = possible_new_root if @root == possible_old_root
   end
 
+  def delete(value)
+    node_to_delete = root.find_node(value)
+    node_to_delete.delete! if node_to_delete
+    value
+  end
+
 end
 
 class BSTNode
@@ -184,18 +190,40 @@ class BSTNode
     end
   end
 
+  def delete!
+    children = [left_child, @ight_child].select { |child| child.is_a?(BSTNode) }
+    case children.length
+    when 0
+      destroy_self!
+    when 1
+      replace_self_with_child(children[0])
+    when 2
+      elevate_leaf_from_bottom!
+    end
+  end
+
   protected
+
+  def replace_self_with_child(child)
+    parent.replace_child(self, child)
+    destroy_self!
+  end
 
   def replace_data_and_remove_old_leaf(other_node)
     replace_data_with(other_node)
-    other_node.delete!
+    other_node.destroy!
   end
 
-  def delete!
+  def destroy!
     if @left_child.is_a?(BSTNode) || @right_child.is_a?(BSTNode)
       raise 'cannot delete a node with children'
     else
-      parent.replace_child(self, NullBSTNode.new) if parent
+      if parent
+        parent.replace_child(self, NullBSTNode.new)
+      else #should mean that the node is the root
+        @tree.possibly_change_root!(self, nil)
+      end
+      #clear pointers to other objects
       @value, @data, @parent, @left_child, @right_child = nil, nil, nil, nil, nil
     end
   end
@@ -241,6 +269,12 @@ class BSTNode
       rotate_left!
     end
     update_height_and_balance!(avoid_rebalance: true)
+  end
+
+  private
+
+  def destroy_self!
+    destroy!
   end
 
 end

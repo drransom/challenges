@@ -10,7 +10,7 @@ def add_at_random(tree)
 end
 
 describe SelfBalancingBinarySearchTree do
-  context 'inserting nodes' do
+  context 'inserting and deleting nodes' do
     subject(:tree) { SelfBalancingBinarySearchTree.new }
 
     describe '#add_element' do
@@ -50,6 +50,22 @@ describe SelfBalancingBinarySearchTree do
         expect(tree.root.right_child.left_child.value).to eq(6)
         expect(tree.root.right_child.right_child.value).to eq(nil)
         expect(tree.root.left_child.value).to eq(4)
+      end
+    end
+
+    describe '#delete' do
+      it 'can delete when there is one element' do
+        tree.add_element(5, 3)
+        tree.delete(5)
+        expect(tree.root).to eq(nil)
+      end
+
+      it 'can delete an element on the left' do
+        tree.add_element(0)
+        tree.add_element(1, 3)
+        tree.delete(1)
+        expect(tree.root.right_child.value).to eq(nil)
+        expect(tree.root.right_child.data).to eq(nil)
       end
     end
   end
