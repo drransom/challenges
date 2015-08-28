@@ -179,4 +179,57 @@ describe SortStack do
     end
   end
 
+  describe '#sort' do
+    subject(:stack) { SortStack.new}
+    it 'sorts one element' do
+      stack.push(3)
+      sorted = SortStack.new([3])
+      stack.sort
+      expect(stack).to eq(sorted)
+    end
+
+    it 'multiple elements' do
+      items = [3, 5, 1, 3, 2, 6, 9, 7, 2]
+      items.each { |item| stack.push(item) }
+      sorted = SortStack.new(items.sort)
+      stack.sort
+      expect(stack).to eq(sorted)
+    end
+
+    it 'returns the stack' do
+      stack.push(5)
+      stack.push(2)
+      expect(stack.sort).to be(stack)
+    end
+
+    it 'no elements' do
+      stack.sort
+      expect(stack).to eq(SortStack.new)
+    end
+
+    it 'does not call the built in sort method' do
+      stack.push(3)
+      stack.push(1)
+      contents = stack.instance_variable_get(:contents)
+      stack.sort
+      expect(contents).to_not have_received(:sort)
+    end
+
+    it 'can sort with a proc' do
+      stack.push(3)
+      stack.push(2)
+      stack.push(5)
+      sorted = SortStack.new([5, 3, 1])
+      stack.sort do |a, b|
+        if a < b
+          1
+        elsif a == b
+          0
+        else
+          -1
+        end
+      end
+      expect(stack).to eq(sorted)
+    end
+  end
 end
