@@ -75,7 +75,8 @@ class SelfBalancingBinarySearchTree
 end
 
 class BSTNode
-  attr_reader :left_child, :right_child, :parent, :value, :height, :balance, :data
+  attr_reader :left_child, :right_child, :parent, :height, :balance
+  attr_accessor :value, :data
 
   def initialize(tree, value, data = nil)
     @tree = tree
