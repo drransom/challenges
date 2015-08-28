@@ -199,7 +199,7 @@ class BSTNode
     elsif children.length == 1
       replace_info_and_remove_old_leaf(children[0])
     else
-      child = (balance >= 0) ? left_child : right_child
+      child = (balance < 0) ? left_child : right_child
       elevate_leaf_from_bottom!(child)
     end
   end
@@ -235,7 +235,7 @@ class BSTNode
 
   def replace_info_and_remove_old_leaf(other_node)
     replace_info_with(other_node)
-    other_node.destroy!
+    other_node.delete!
   end
 
   def destroy!

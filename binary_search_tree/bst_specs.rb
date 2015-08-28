@@ -133,6 +133,17 @@ describe SelfBalancingBinarySearchTree do
         expect(right_child.height).to eq(1)
       end
 
+      it 'imbalanced' do
+        tree.add_element(0)
+        tree.add_element(2)
+        tree.add_element(-4)
+        tree.add_element(-2)
+        tree.add_element(-6)
+        tree.delete(2)
+        expect(tree.root.value).to_not eq(0)
+        expect(tree.root.right_child.value).to_not eq(2)
+        expect(tree.root.right_child.value).to be_truthy
+      end
     end
   end
 
