@@ -118,11 +118,6 @@ class BSTNode
     end
   end
 
-  def set_data(new_data)
-    @data = new_data
-    self
-  end
-
   def find_node(query_value)
 
     if value == query_value
@@ -181,6 +176,35 @@ class BSTNode
     @tree.possibly_change_root!(self, new_parent)
   end
 
+
+  def update_old_parent!(old_parent, new_parent)
+    if old_parent
+      old_parent.replace_child(self, new_parent, avoid_rebalance: true)
+    end
+  end
+
+  protected
+
+  def replace_data_and_remove_old_leaf(other_node)
+    replace_data_with(other_node)
+    other_node.delete!
+  end
+
+  def delete!
+    if @left_child.is_a?(BSTNode) || @right_child.is_a?(BSTNode)
+      raise 'cannot delete a node with children'
+    else
+      parent.replace_child(self, NullBSTNode.new) if parent
+      @value, @data, @parent, @left_child, @right_child = nil, nil, nil, nil, nil
+    end
+  end
+
+  def replace_data_with(other_node)
+    value = other_node.value
+    data = other_node.data
+  end
+
+
   def replace_child(old_child, new_child, options = {})
     case old_child
     when left_child
@@ -190,24 +214,17 @@ class BSTNode
     end
   end
 
-  def update_old_parent!(old_parent, new_parent)
-    old_parent.replace_child(self, new_parent, avoid_rebalance: true) if old_parent
-  end
-
-  protected
-
-  def set_value(new_value)
-    @value = new_value
-    self
-  end
-
   def update_height_and_balance!(options = {})
-    @balance = @left_child.height - @right_child.height
-    @height = [@left_child.height, @right_child.height].max + 1
+    new_balance = @left_child.height - @right_child.height
+    new_height = [@left_child.height, @right_child.height].max + 1
+
+    changed = @balance != new_balance || @height != new_height
+    @balance = new_balance
+    @height = new_height
 
     rebalance! unless balanced? || options[:avoid_rebalance]
 
-    @parent.update_height_and_balance!(options) if @parent && !options[:avoid_rebalance]
+    @parent.update_height_and_balance!(options) if changed && @parent
   end
 
   def balanced?
