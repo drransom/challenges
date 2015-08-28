@@ -117,4 +117,65 @@ describe SortStack do
     end
   end
 
+  describe '#==' do
+    subject(:stack) { SortStack.new }
+    let(:other_stack) { SortStack.new }
+
+    it 'empty stacks' do
+      expect(stack == other_stack).to be_truthy
+    end
+
+    it 'stacks not equal' do
+      stack.push(3)
+      expect(stack == other_stack).to be_falsy
+    end
+
+    it 'stacks changed to be equal' do
+      stack.push(5)
+      stack.push(3)
+      stack.pop
+      other_stack.push(5)
+      expect(stack == other_stack).to be_truthy
+    end
+
+    it 'nonempty nonequal stacks' do
+      stack.push(5)
+      other_stack.push(5)
+      other_stack.push(3)
+      expect(stack == other_stack).to be_falsy
+    end
+  end
+
+  describe '#hash' do
+    subject(:stack) { SortStack.new }
+    subject(:other_stack) { SortStack.new }
+
+
+    it 'empty stacks' do
+      expect(stack.hash).to eq(other_stack.hash)
+    end
+
+    it 'stacks not equal' do
+      stack.push(3)
+      expect(stack == other_stack).to_not eq(other_stack.hash)
+    end
+
+    it 'stacks changed to be equal' do
+      stack.push(5)
+      stack.push(3)
+      stack.pop
+      other_stack.push(5)
+      expect(stack == other_stack).to eq(other_stack.hash)
+    end
+
+    it 'nonempty nonequal stacks' do
+      stack.push(5)
+      other_stack.push(5)
+      other_stack.push(3)
+      expect(stack == other_stack).to_not eq(other_stack.hash)
+    end
+  end
+
+  
+
 end
