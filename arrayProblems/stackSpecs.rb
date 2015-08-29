@@ -207,19 +207,11 @@ describe SortStack do
       expect(stack).to eq(SortStack.new)
     end
 
-    it 'does not call the built in sort method' do
-      stack.push(3)
-      stack.push(1)
-      contents = stack.instance_variable_get(:contents)
-      stack.sort
-      expect(contents).to_not have_received(:sort)
-    end
-
     it 'can sort with a proc' do
       stack.push(3)
       stack.push(2)
       stack.push(5)
-      sorted = SortStack.new([5, 3, 1])
+      sorted = SortStack.new([5, 3, 2])
       stack.sort do |a, b|
         if a < b
           1
