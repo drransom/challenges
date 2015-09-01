@@ -1,3 +1,5 @@
+import random
+import pdb
 class SortArray(list):
 
     def mergeSort(self):
@@ -9,6 +11,51 @@ class SortArray(list):
             right = SortArray(self[mid:])
             return SortArray.merge(left.mergeSort(), right.mergeSort())
 
+    def quicksort_in_place(self, start = 0, end = -1):
+        # pdb.set_trace()
+        if end == -1:
+            end = len(self) - 1
+        if len(self) <= 1 or start >= end:
+            return
+        if start >= end:
+            return
+        # self.move_pivot_to_start(start, end)
+        mid = self.partition(start, end)
+        if start < mid:
+            self.quicksort_in_place(start, mid - 1)
+        if mid < end:
+            self.quicksort_in_place(mid+1, end)
+
+    def partition(self, start, end):
+        left_index = start + 1
+        right_index = end
+        pivot_value = self[start]
+        while right_index >= left_index:
+            if self[left_index] > pivot_value and self[right_index] <= pivot_value:
+                self.swap(left_index, right_index)
+            if self[right_index] > pivot_value:
+                right_index -= 1
+            if self[left_index] <= pivot_value:
+                left_index += 1
+        if self[start] > self[right_index]:
+            self.swap(start, right_index)
+        return right_index
+
+
+    def move_pivot_to_start(self, start, end):
+
+        rand_num = random.random()
+        if rand_num == 1:
+            self.move_pivot_to_start(start, end)
+        else:
+            index = int(rand_num * (end - start) + start)
+            self.swap(start, index)
+
+    def swap(self, idx1, idx2):
+        temp = self[idx1]
+        self[idx1] = self[idx2]
+        self[idx2] = temp
+
     @classmethod
     def merge(cls, sortArray1, sortArray2):
         new = []
@@ -18,7 +65,3 @@ class SortArray(list):
             else:
                 new.append(sortArray2.pop(0))
         return new + sortArray1 + sortArray2
-
-
-x = SortArray([1, 5, 3])
-print x.mergeSort()
