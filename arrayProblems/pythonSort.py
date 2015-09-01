@@ -15,35 +15,36 @@ class SortArray(list):
         # pdb.set_trace()
         start = options['start'] if options.has_key('start') else 0
         end = options['end'] if options.has_key('end') else len(self) - 1
-        if options.has_key('comparator'):
-            comparator = options['comparator']
+        if options.has_key('map_function'):
+            map_function = options['map_function']
         else:
-            comparator = {}
+            map_function = lambda x: x
         if len(self) <= 1 or start >= end:
             return
         if start >= end:
             return
-        self.move_pivot_to_start(start, end)
-        mid = self.partition(start, end)
+        # self.move_pivot_to_start(start, end)
+        mid = self.partition(start, end, map_function)
         if start < mid:
-            options = {'start': start, 'end': mid - 1}
+            options = {'start': start, 'end': mid - 1, 'map_function': map_function}
             self.quicksort_in_place(options)
         if mid < end:
-            options = {'start': mid+1, 'end': end}
+            options = {'start': mid+1, 'end': end, 'map_function': map_function}
             self.quicksort_in_place(options)
 
-    def partition(self, start, end):
+    def partition(self, start, end, map_function):
         left_index = start + 1
         right_index = end
-        pivot_value = self[start]
+        pivot_value = map_function(self[start])
         while right_index >= left_index:
-            if self[left_index] > pivot_value and self[right_index] <= pivot_value:
+            if (map_function(self[left_index]) > pivot_value and
+               map_function(self[right_index]) <= pivot_value):
                 self.swap(left_index, right_index)
-            if self[right_index] > pivot_value:
+            if map_function(self[right_index]) > pivot_value:
                 right_index -= 1
-            if self[left_index] <= pivot_value:
+            if map_function(self[left_index]) <= pivot_value:
                 left_index += 1
-        if self[start] > self[right_index]:
+        if map_function(self[start]) > map_function(self[right_index]):
             self.swap(start, right_index)
         return right_index
 
@@ -71,7 +72,3 @@ class SortArray(list):
             else:
                 new.append(sortArray2.pop(0))
         return new + sortArray1 + sortArray2
-
-x = SortArray([5, 1, 9, 7, 2, 7, 2, 3, 5, 8])
-x.quicksort_in_place()
-print x
