@@ -23,7 +23,7 @@ class SortArray(list):
             return
         if start >= end:
             return
-        # self.move_pivot_to_start(start, end)
+        self.move_pivot_to_start(start, end)
         mid = self.partition(start, end)
         if start < mid:
             options = {'start': start, 'end': mid - 1}
@@ -72,6 +72,6 @@ class SortArray(list):
                 new.append(sortArray2.pop(0))
         return new + sortArray1 + sortArray2
 
-x = SortArray([5, 2, 7, 2, 3, 5, 8])
+x = SortArray([5, 1, 9, 7, 2, 7, 2, 3, 5, 8])
 x.quicksort_in_place()
 print x
