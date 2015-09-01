@@ -11,10 +11,14 @@ class SortArray(list):
             right = SortArray(self[mid:])
             return SortArray.merge(left.mergeSort(), right.mergeSort())
 
-    def quicksort_in_place(self, start = 0, end = -1):
+    def quicksort_in_place(self, options = {}):
         # pdb.set_trace()
-        if end == -1:
-            end = len(self) - 1
+        start = options['start'] if options.has_key('start') else 0
+        end = options['end'] if options.has_key('end') else len(self) - 1
+        if options.has_key('comparator'):
+            comparator = options['comparator']
+        else:
+            comparator = {}
         if len(self) <= 1 or start >= end:
             return
         if start >= end:
@@ -22,9 +26,11 @@ class SortArray(list):
         # self.move_pivot_to_start(start, end)
         mid = self.partition(start, end)
         if start < mid:
-            self.quicksort_in_place(start, mid - 1)
+            options = {'start': start, 'end': mid - 1}
+            self.quicksort_in_place(options)
         if mid < end:
-            self.quicksort_in_place(mid+1, end)
+            options = {'start': mid+1, 'end': end}
+            self.quicksort_in_place(options)
 
     def partition(self, start, end):
         left_index = start + 1
@@ -65,3 +71,7 @@ class SortArray(list):
             else:
                 new.append(sortArray2.pop(0))
         return new + sortArray1 + sortArray2
+
+x = SortArray([5, 2, 7, 2, 3, 5, 8])
+x.quicksort_in_place()
+print x
