@@ -72,7 +72,3 @@ class SortArray(list):
             else:
                 new.append(sortArray2.pop(0))
         return new + sortArray1 + sortArray2
-
-x = SortArray([3, 2, 1, 5, 2, -2, -5])
-x.quicksort_in_place({ 'sort_by': lambda x: abs(x)})
-print x
