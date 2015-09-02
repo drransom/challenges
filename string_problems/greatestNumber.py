@@ -20,29 +20,3 @@ class Solution:
             return 1
         else:
             return -1
-        # if len(str1) == len(str2):
-        #     if str1 == str2:
-        #         return 0
-        #     elif str1 > str2:
-        #         return 1
-        #     else:
-        #         return -1
-        # elif len(str1) > 0 and len(str1) < len(str2):
-        #     substring = str2[:len(str1)]
-        #     if substring == str1:
-        #         return self.lexCompare(str1, str2[len(str1):])
-        #     else:
-        #         return self.lexCompare(str1, substring)
-        # elif len(str2) > 0 and len(str1) > len(str2):
-        #     substring = str1[:len(str2)]
-        #     if substring == str2:
-        #         return self.lexCompare(str1[len(str2):], str2)
-        #     else:
-        #         return self.lexCompare(substring, str2)
-        # elif str1 == '':
-        #     return 1
-        # else:
-        #     return -1
-
-x = Solution()
-print x.largestNumber([ 472, 663, 964, 722, 485, 852, 635, 4, 368, 676, 319, 412 ])
