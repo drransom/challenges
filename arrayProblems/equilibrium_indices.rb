@@ -7,16 +7,16 @@ def solution(a)
     equilibrium_indices = []
     length = a.length
     a.length.times do |i|
-        if i == 0
-            sum_array << 0
-            reverse_sum_array << sum - a.first
-        elsif i == length - 1
-            sum_array << sum - a.last
-            reverse_sum_array << 0
-        else
-            sum_array << sum_array.last + a[i-1]
-            reverse_sum_array << reverse_sum_array.last - a[i]
-        end
+      if i == 0
+          sum_array << 0
+          reverse_sum_array << sum - a.first
+      elsif i == length - 1
+          sum_array << sum - a.last
+          reverse_sum_array << 0
+      else
+          sum_array << sum_array.last + a[i-1]
+          reverse_sum_array << reverse_sum_array.last - a[i]
+      end
     end
     puts "sum_array = #{sum_array}"
     puts "reverse sum array = #{reverse_sum_array}"
