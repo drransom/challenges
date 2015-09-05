@@ -56,5 +56,10 @@ context NDArray do
     it 'first index out of bounds' do
       expect(nd_arr[3, 1]).to eq(nil)
     end
+
+    it 'index three levels deep' do
+      expect(nd_arr[1, 2, 1]).to eq(6)
+      expect(nd_arr[2, 1, 2]).to eq(9)
+    end
   end
 end
