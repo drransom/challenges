@@ -5,11 +5,11 @@ class NDArray
   end
 
   def [](*args)
-    return_array = array
+    return_value = array
     args.each do |num|
-      return_array = return_array[num]
-      break if return_array.nil?
+      return_value = return_value[num]
+      break unless return_value.is_a?(Array) || return_value.is_a?(NDArray)
     end
-    return_array
+    return_value
   end
 end
