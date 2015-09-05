@@ -1,7 +1,25 @@
 require 'rspec'
 require_relative 'n_dimensional_array'
 
-describe NDArray do
+def create_array
+  array = [].tap do |arr|
+    3.times do
+      arr << []
+    end
+  end.each_with_index do |row, idx|
+    3.times do |i|
+      row << [].tap do |arr|
+        3.times do |j|
+          arr << (idx + i) * (j + 1)
+        end
+      end
+    end
+  end
+  array
+end
+
+
+context NDArray do
   describe '#initialize' do
     it 'initializes with an empty array if no array given' do
       x = NDArray.new()
@@ -19,9 +37,16 @@ describe NDArray do
   end
 
   describe '#[]' do
-    subject(:nd_array) { NDArray.new [[1, 2], [3, 4]]}
-    it 'is true' do
-      expect(true).to eq(true)
+    subject(:nd_arr) { NDArray.new(create_array) }
+
+    it 'can index into a column' do
+      expect(nd_arr[0]).to eq([[0, 0, 0], [1, 2, 3], [2, 4, 6]])
+      expect(nd_arr[1]).to eq([[1, 2, 3], [2, 4, 6], [3, 6, 9]])
+      expect(nd_arr[2]).to eq([[2, 4, 6], [3, 6, 9], [4, 8, 12]])
+    end
+
+    it 'returns nil if index out of bounds' do
+      expect(nd_arr[3]).to eq(nil)
     end
   end
 end
