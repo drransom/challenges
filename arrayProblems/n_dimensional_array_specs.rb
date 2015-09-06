@@ -74,4 +74,13 @@ context NDArray do
       expect(nd_arr[0, :*, 1]).to eq([0, 2, 4])
     end
   end
+
+  describe '#[]=' do
+    subject(:nd_arr) { NDArray.new(create_array) }
+
+    it 'can set a value' do
+      nd_arr[1, 1, 1] = 10
+      expect(nd_arr[1, 1, 1]).to eq(10)
+    end 
+  end
 end
