@@ -61,5 +61,17 @@ context NDArray do
       expect(nd_arr[1, 2, 1]).to eq(6)
       expect(nd_arr[2, 1, 2]).to eq(9)
     end
+
+    it 'too many indices' do
+      expect { nd_arr[0, 0, 0, 0] }.to raise_error
+    end
+
+    it 'can retrieve a column' do
+      expect(nd_arr[:*, 1]).to eq([[1, 2, 3], [2, 4, 6], [3, 6, 9]])
+    end
+
+    it 'can put the all symbol in the middle' do
+      expect(nd_arr[0, :*, 1]).to eq([0, 2, 4])
+    end
   end
 end
