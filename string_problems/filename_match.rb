@@ -5,6 +5,6 @@ class FileMatcher
   end
 
   def pattern_match?(pattern, filename)
-    # filename == pattern
+    filename == pattern
   end
 end
