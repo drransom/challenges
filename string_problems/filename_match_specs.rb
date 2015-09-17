@@ -7,8 +7,7 @@ context FileMatcher do
 
     it 'matches a string to itself' do
       pattern = 'abcde'
-      filenames.set_pattern('abcde')
-      expect(filenames.pattern_match?(pattern)).to be_truthy
+      expect(filenames.pattern_match?(pattern, pattern)).to be_truthy
     end
   end
 end

@@ -1,17 +1,10 @@
 class FileMatcher
-  def initialize
-    @pattern = ''
+
+  def match(pattern, filenames)
+    filenames.select { |filename| pattern_match?(pattern, filename)}
   end
 
-  def set_pattern(pattern)
-    @pattern = pattern
-  end
-
-  def match(filenames)
-    filenames.select { |filename| pattern_match?(filename)}
-  end
-
-  def pattern_match?(filename)
-    # filename == @pattern
+  def pattern_match?(pattern, filename)
+    # filename == pattern
   end
 end
