@@ -11,9 +11,51 @@ context FileMatcher do
     end
 
     it 'does not match an unequal string' do
-      pattern1 = 'abcde'
-      pattern2 = '12345'
-      expect(filenames.pattern_match?(pattern1, pattern2)).to be_falsy
+      pattern = 'abcde'
+      string = '12345'
+      expect(filenames.pattern_match?(pattern, string)).to be_falsy
+    end
+
+    it 'matches a string with a one-character wildcard' do
+      pattern = 'ab?de'
+      string = 'abcde'
+      expect(filenames.pattern_match?(pattern, string)).to be_truthy
+    end
+
+    it 'wildcard can be no characters' do
+      pattern = 'ab?de'
+      string = 'abde'
+      expect(filenames.pattern_match?(pattern, string)).to be_truthy
+    end
+
+    it 'one-character wildcard at start' do
+      pattern = '?bcde'
+      string = 'abcde'
+      expect(filenames.pattern_match?(pattern, string)).to be_truthy
+    end
+
+    it 'zero-character wildcard at start' do
+      pattern = '?bcde'
+      string = 'bcde'
+      expect(filenames.pattern_match?(pattern, string)).to be_truthy
+    end
+
+    it 'one-character wildcard at end' do
+      pattern = 'abcd?'
+      string = 'abcde'
+      expect(filenames.pattern_match?(pattern, string)).to be_truthy
+    end
+
+    it 'zero-character wildcard at end' do
+      pattern = 'abcd?'
+      string = 'abcd'
+      expect(filenames.pattern_match?(pattern, string)).to be_truthy
+    end
+
+    it 'question mark in string is not wild' do
+      pattern = 'abcde'
+      string = 'ab?de'
+      expect(filenames.pattern_match?(pattern, string)).to be_falsy
     end
   end
 end
