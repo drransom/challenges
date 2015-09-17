@@ -81,6 +81,11 @@ context NDArray do
     it 'can set a value' do
       nd_arr[1, 1, 1] = 10
       expect(nd_arr[1, 1, 1]).to eq(10)
-    end 
+    end
+
+    it 'can set an entire column' do
+      nd_arr[:*, 1, 1] = [10, 10, 10]
+      expect(nd_arr[:*, 1, 1]).to eq([10, 10, 10])
+    end
   end
 end

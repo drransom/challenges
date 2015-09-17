@@ -1,3 +1,4 @@
+require 'byebug'
 class NDArray
   attr_accessor :array
   def initialize(array = [])
@@ -23,6 +24,7 @@ class NDArray
   end
 
   def []=(*args)
+    debugger
     indices = args[0...-2]
     subarray = self[indices]
     subarray[args[-2]] = args[-1]
