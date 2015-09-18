@@ -15,6 +15,8 @@ class FileMatcher
       case pattern[idx]
       when '?'
         return match_with_wildcard?(pattern, filename, idx, file_index)
+      when '*'
+        return match_with_all_wildcard?(pattern, filename, idx, file_index)
       else
         return false unless pattern[idx] == filename[file_index]
         file_index += 1
@@ -27,5 +29,12 @@ class FileMatcher
     new_idx = pattern_index + 1
     pattern_match?(pattern, filename, {pattern_index: new_idx, file_index: file_index}) ||
     pattern_match?(pattern, filename, {pattern_index: new_idx, file_index: file_index + 1})
+  end
+
+  def match_with_all_wildcard?(pattern, filename, pattern_index, file_index)
+    file_index.upto(filename.length) do |idx|
+      return true if pattern_match?(pattern, filename, {pattern_index: pattern_index + 1, file_index: idx})
+    end
+    false
   end
 end

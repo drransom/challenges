@@ -82,6 +82,70 @@ context FileMatcher do
       expect(filenames.pattern_match?(pattern, string)).to be_falsy
     end
 
+    it 'unlimited character wildcard works with one character' do
+      pattern = '*'
+      string = 'abc'
+      expect(filenames.pattern_match?(pattern, string)).to be_truthy
+    end
 
+    it 'multiple chars at start of string' do
+      pattern = '*c'
+      string = 'abc'
+      expect(filenames.pattern_match?(pattern, string)).to be_truthy
+    end
+
+    it 'no chars at start of string' do
+      pattern = '*abc'
+      string = 'abc'
+      expect(filenames.pattern_match?(pattern, string)).to be_truthy
+    end
+
+    it 'no chars in middle of string' do
+      pattern = 'abc*def'
+      string = 'abcdef'
+      expect(filenames.pattern_match?(pattern, string)).to be_truthy
+    end
+
+    it 'multiple chars in middle of string' do
+      pattern = 'abc*def'
+      string = 'abcasdfhgrwerqasdfdef'
+      expect(filenames.pattern_match?(pattern, string)).to be_truthy
+    end
+    
+    it 'no chars at end of string' do
+      pattern = 'abc*'
+      string = 'abc'
+      expect(filenames.pattern_match?(pattern, string)).to be_truthy
+    end
+
+    it 'multiple chars at end of string' do
+      pattern = 'abc*'
+      string = 'abcdef'
+      expect(filenames.pattern_match?(pattern, string)).to be_truthy
+    end
+
+    it 'no match' do
+      pattern = 'abc*def'
+      string = 'abcasdfdefh'
+      expect(filenames.pattern_match?(pattern, string)).to be_falsy
+    end
+
+    it 'multiple wildcards in a row' do
+      pattern = 'abc**def'
+      string = 'abcasdfasdfdef'
+      expect(filenames.pattern_match?(pattern, string)).to be_truthy
+    end
+
+    it 'wildcards at different points in a string' do
+      pattern = 'a*b*c'
+      string = 'aasdfbasdfasdfc'
+      expect(filenames.pattern_match?(pattern, string)).to be_truthy
+    end
+
+    it 'different types of wildcards' do
+      pattern = 'a*b??e'
+      string = 'adfgdfgdfgbfe'
+      expect(filenames.pattern_match?(pattern, string)).to be_truthy
+    end
   end
 end
