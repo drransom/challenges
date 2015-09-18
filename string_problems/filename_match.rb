@@ -11,15 +11,17 @@ class FileMatcher
       return false if file_index > filename.length
       case pattern[idx]
       when '?'
-        return (
-          pattern_match?(pattern[idx+1..-1], filename[file_index..-1]) ||
-          pattern_match?(pattern[idx+1..-1], filename[file_index+1..-1])
-        )
+        return match_with_wildcard?(pattern, filename, idx, file_index)
       else
         return false unless pattern[idx] == filename[file_index]
         file_index += 1
       end
     end
     file_index == filename.length
+  end
+
+  def match_with_wildcard?(pattern, filename, pattern_index, file_index)
+    pattern_match?(pattern[pattern_index+1..-1], filename[file_index..-1]) ||
+    pattern_match?(pattern[pattern_index+1..-1], filename[file_index+1..-1])
   end
 end
