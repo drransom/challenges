@@ -31,8 +31,8 @@ class FileMatcher
     pattern_match?(pattern, filename, {pattern_index: new_idx, file_index: file_index + 1})
   end
 
-  def match_with_all_wildcard?(pattern, filename, pattern_index, file_index)
-    file_index.upto(filename.length) do |idx|
+  def match_with_all_wildcard?(pattern, filename, pattern_index, file_index, max = nil)
+    file_index.upto(max || filename.length) do |idx|
       return true if pattern_match?(pattern, filename, {pattern_index: pattern_index + 1, file_index: idx})
     end
     false
