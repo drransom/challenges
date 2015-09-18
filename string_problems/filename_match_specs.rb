@@ -57,5 +57,31 @@ context FileMatcher do
       string = 'ab?de'
       expect(filenames.pattern_match?(pattern, string)).to be_falsy
     end
+
+    it 'question mark matches an empty string' do
+      pattern = '?'
+      string = ''
+      expect(filenames.pattern_match?(pattern, string)).to be_truthy
+    end
+
+    it 'multiple question marks in a row' do
+      pattern = 'ab??e'
+      string = 'abe'
+      expect(filenames.pattern_match?(pattern, string)).to be_truthy
+    end
+
+    it 'multiple opening question marks' do
+      pattern = '??bcde'
+      string = 'abcde'
+      expect(filenames.pattern_match?(pattern, string)).to be_truthy
+    end
+
+    it 'has question mark but does not match' do
+      pattern = 'ab?de'
+      string = 'abcee'
+      expect(filenames.pattern_match?(pattern, string)).to be_falsy
+    end
+
+
   end
 end
