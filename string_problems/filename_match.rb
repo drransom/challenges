@@ -1,13 +1,16 @@
+require 'byebug'
+
 class FileMatcher
 
   def match(pattern, filenames)
     filenames.select { |filename| pattern_match?(pattern, filename)}
   end
 
-  def pattern_match?(pattern, filename)
-    return true if filename == pattern
-    file_index = 0
-    pattern.length.times do |idx|
+  def pattern_match?(pattern, filename, options = {})
+    pattern_index = options[:pattern_index] || 0
+    file_index = options[:file_index] || 0
+    return true if pattern[pattern_index..-1] == filename[file_index..-1]
+    pattern_index.upto(pattern.length-1) do |idx|
       return false if file_index > filename.length
       case pattern[idx]
       when '?'
@@ -21,7 +24,8 @@ class FileMatcher
   end
 
   def match_with_wildcard?(pattern, filename, pattern_index, file_index)
-    pattern_match?(pattern[pattern_index+1..-1], filename[file_index..-1]) ||
-    pattern_match?(pattern[pattern_index+1..-1], filename[file_index+1..-1])
+    new_idx = pattern_index + 1
+    pattern_match?(pattern, filename, {pattern_index: new_idx, file_index: file_index}) ||
+    pattern_match?(pattern, filename, {pattern_index: new_idx, file_index: file_index + 1})
   end
 end
