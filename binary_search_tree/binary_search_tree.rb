@@ -88,6 +88,13 @@ class SelfBalancingBinarySearchTree < BinarySearchTree
 end
 
 class BSTNode
+  def initialize(tree, value, data = nil)
+    @tree = tree
+    @value = value
+    @data = data
+    @left_child = NullBSTNode.new
+    @right_child = NullBSTNode.new
+  end
 end
 
 class SBBSTNode < BSTNode
@@ -95,13 +102,9 @@ class SBBSTNode < BSTNode
   attr_accessor :value, :data
 
   def initialize(tree, value, data = nil)
-    @tree = tree
-    @value = value
-    @data = data
-    @left_child = NullBSTNode.new
-    @right_child = NullBSTNode.new
     @balance = 0
     @height = 0
+    super(tree, value, data)
   end
 
   def set_left_child(new_child, options = {})
