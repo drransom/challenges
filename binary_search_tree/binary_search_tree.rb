@@ -316,8 +316,6 @@ class SBBSTNode < BSTNode
     end
   end
 
-
-
   protected
 
 
