@@ -88,6 +88,9 @@ class SelfBalancingBinarySearchTree < BinarySearchTree
 end
 
 class BSTNode
+  attr_reader :left_child, :right_child, :parent
+  attr_accessor :value, :data
+
   def initialize(tree, value, data = nil)
     @tree = tree
     @value = value
@@ -95,47 +98,30 @@ class BSTNode
     @left_child = NullBSTNode.new
     @right_child = NullBSTNode.new
   end
-end
 
-class SBBSTNode < BSTNode
-  attr_reader :left_child, :right_child, :parent, :height, :balance
-  attr_accessor :value, :data
-
-  def initialize(tree, value, data = nil)
-    @balance = 0
-    @height = 0
-    super(tree, value, data)
-  end
-
-  def set_left_child(new_child, options = {})
+  def set_left_child(new_child)
     @left_child = new_child
-    new_child.update_height_and_balance!(avoid_rebalance: true)
-    update_height_and_balance! unless options[:avoid_rebalance]
-    new_child
   end
 
-  def set_right_child(new_child, options = {})
+  def set_right_child(new_child)
     @right_child = new_child
-    new_child.update_height_and_balance!(avoid_rebalance: true)
-    update_height_and_balance! unless options[:avoid_rebalance]
-    new_child
-  end
-
-  def set_parent(new_parent)
-    @parent = new_parent
-    self
   end
 
   def find_and_create_node_for(new_value, data = nil)
     side = new_value < value ? "left" : "right"
     node = self.send((side + "_child"))
     if node.is_a?(NullBSTNode)
-      new_node = SBBSTNode.new(@tree, new_value, data)
+      new_node = self.class.new(@tree, new_value, data)
       new_node.set_parent(self)
       self.send("set_" + side + "_child", new_node)
     else
       node.find_and_create_node_for(new_value, data)
     end
+  end
+
+  def set_parent(new_parent)
+    @parent = new_parent
+    self
   end
 
   def find_node(query_value)
@@ -162,6 +148,119 @@ class SBBSTNode < BSTNode
 
   def has_right_child?
     @right_child.is_a?(self.class)
+  end
+
+  def delete!
+    children = [left_child, right_child].select { |child| child.is_a?(self.class) }
+    if children.length == 0
+      destroy_self!
+    elsif children.length == 1 && parent
+      replace_self_with_child(children[0])
+    elsif children.length == 1
+      replace_info_and_remove_old_leaf(children[0])
+    else
+      elevate_leaf_from_bottom!(left_child)
+    end
+  end
+
+  def has_child?
+    left_child.is_a?(self.class) || right_child.is_a?(self.class)
+  end
+
+  protected
+
+  def elevate_leaf_from_bottom!(child)
+    case child
+    when left_child
+      replacement = child.find_highest_below
+    when right_child
+      replacement = child.find_lowest_below
+    end
+    replace_info_and_remove_old_leaf(replacement)
+  end
+
+  def find_lowest_below
+    has_left_child? ? left_child.find_lowest_below : self
+  end
+
+  def find_highest_below
+    has_right_child? ? right_child.find_highest_below : self
+  end
+
+  def replace_self_with_child(child)
+    parent.replace_child(self, child)
+    destroy_self!
+  end
+
+  def replace_info_and_remove_old_leaf(other_node)
+    replace_info_with(other_node)
+    other_node.delete!
+  end
+
+  def destroy!
+    if parent
+      parent.replace_child(self, NullBSTNode.new) if parent
+    elsif !has_child? #should mean that the tree is empty
+      @tree.possibly_change_root!(self, nil)
+    end
+
+    #clear pointers to other objects
+    @value, @data, @parent, @left_child, @right_child = nil, nil, nil, nil, nil
+  end
+
+  def replace_info_with(other_node)
+    @value = other_node.value
+    @data = other_node.data
+  end
+
+
+  def replace_child(old_child, new_child)
+    case old_child
+    when left_child
+      set_left_child(new_child)
+    when right_child
+      set_right_child(new_child)
+    end
+  end
+
+  private
+
+  def destroy_self!
+    destroy!
+  end
+
+end
+
+class SBBSTNode < BSTNode
+  attr_reader :height, :balance
+
+  def initialize(tree, value, data = nil)
+    @balance = 0
+    @height = 0
+    super(tree, value, data)
+  end
+
+  def set_left_child(new_child, options = {})
+    super(new_child)
+    new_child.update_height_and_balance!(avoid_rebalance: true)
+    update_height_and_balance! unless options[:avoid_rebalance]
+    new_child
+  end
+
+  def set_right_child(new_child, options = {})
+    super(new_child)
+    new_child.update_height_and_balance!(avoid_rebalance: true)
+    update_height_and_balance! unless options[:avoid_rebalance]
+    new_child
+  end
+
+  def replace_child(old_child, new_child, options = {})
+    case old_child
+    when left_child
+      set_left_child(new_child, options)
+    when right_child
+      set_right_child(new_child, options)
+    end
   end
 
   def rotate_right!
@@ -217,65 +316,10 @@ class SBBSTNode < BSTNode
     end
   end
 
-  def has_child?
-    left_child.is_a?(self.class) || right_child.is_a?(self.class)
-  end
+
 
   protected
 
-  def elevate_leaf_from_bottom!(child)
-    case child
-    when left_child
-      replacement = child.find_highest_below
-    when right_child
-      replacement = child.find_lowest_below
-    end
-    replace_info_and_remove_old_leaf(replacement)
-  end
-
-  def find_lowest_below
-    has_left_child? ? left_child.find_lowest_below : self
-  end
-
-  def find_highest_below
-    has_right_child? ? right_child.find_highest_below : self
-  end
-
-  def replace_self_with_child(child)
-    parent.replace_child(self, child)
-    destroy_self!
-  end
-
-  def replace_info_and_remove_old_leaf(other_node)
-    replace_info_with(other_node)
-    other_node.delete!
-  end
-
-  def destroy!
-    if parent
-      parent.replace_child(self, NullBSTNode.new) if parent
-    elsif !has_child? #should mean that the tree is empty
-      @tree.possibly_change_root!(self, nil)
-    end
-
-    #clear pointers to other objects
-    @value, @data, @parent, @left_child, @right_child = nil, nil, nil, nil, nil
-  end
-
-  def replace_info_with(other_node)
-    @value = other_node.value
-    @data = other_node.data
-  end
-
-
-  def replace_child(old_child, new_child, options = {})
-    case old_child
-    when left_child
-      set_left_child(new_child, options)
-    when right_child
-      set_right_child(new_child, options)
-    end
-  end
 
   def update_height_and_balance!(options = {})
     new_balance = @left_child.height - @right_child.height
@@ -303,12 +347,6 @@ class SBBSTNode < BSTNode
       rotate_left!
     end
     update_height_and_balance!(avoid_rebalance: true)
-  end
-
-  private
-
-  def destroy_self!
-    destroy!
   end
 
 end
