@@ -1,6 +1,3 @@
-require 'byebug'
-
-
 class BinarySearchTree
   attr_accessor :root
   def initialize(node_type = BSTNode)
