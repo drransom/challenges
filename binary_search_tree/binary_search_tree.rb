@@ -1,14 +1,16 @@
 require 'byebug'
 
-class SelfBalancingBinarySearchTree
+
+class BinarySearchTree
   attr_accessor :root
-  def initialize
+  def initialize(node_type = BSTNode)
+    @node_type = node_type
     @root = NullBSTNode.new
   end
 
   def add_element(value, data = nil)
     if root.is_a?(NullBSTNode)
-      new_node = BSTNode.new(self, value, data)
+      new_node = @node_type.new(self, value, data)
       @root = new_node
     else
       new_node = @root.find_and_create_node_for(value, data)
@@ -77,10 +79,18 @@ class SelfBalancingBinarySearchTree
     node_to_delete.delete! if node_to_delete
     value
   end
+end
 
+class SelfBalancingBinarySearchTree < BinarySearchTree
+  def initialize
+    super(SBBSTNode)
+  end
 end
 
 class BSTNode
+end
+
+class SBBSTNode < BSTNode
   attr_reader :left_child, :right_child, :parent, :height, :balance
   attr_accessor :value, :data
 
@@ -117,7 +127,7 @@ class BSTNode
     side = new_value < value ? "left" : "right"
     node = self.send((side + "_child"))
     if node.is_a?(NullBSTNode)
-      new_node = BSTNode.new(@tree, new_value, data)
+      new_node = SBBSTNode.new(@tree, new_value, data)
       new_node.set_parent(self)
       self.send("set_" + side + "_child", new_node)
     else
@@ -144,11 +154,11 @@ class BSTNode
   end
 
   def has_left_child?
-    @left_child.is_a?(BSTNode)
+    @left_child.is_a?(self.class)
   end
 
   def has_right_child?
-    @right_child.is_a?(BSTNode)
+    @right_child.is_a?(self.class)
   end
 
   def rotate_right!
@@ -191,7 +201,7 @@ class BSTNode
   end
 
   def delete!
-    children = [left_child, right_child].select { |child| child.is_a?(BSTNode) }
+    children = [left_child, right_child].select { |child| child.is_a?(self.class) }
     if children.length == 0
       destroy_self!
     elsif children.length == 1 && parent
@@ -205,7 +215,7 @@ class BSTNode
   end
 
   def has_child?
-    left_child.is_a?(BSTNode) || right_child.is_a?(BSTNode)
+    left_child.is_a?(self.class) || right_child.is_a?(self.class)
   end
 
   protected
@@ -244,8 +254,9 @@ class BSTNode
     elsif !has_child? #should mean that the tree is empty
       @tree.possibly_change_root!(self, nil)
     end
-      #clear pointers to other objects
-      @value, @data, @parent, @left_child, @right_child = nil, nil, nil, nil, nil
+
+    #clear pointers to other objects
+    @value, @data, @parent, @left_child, @right_child = nil, nil, nil, nil, nil
   end
 
   def replace_info_with(other_node)

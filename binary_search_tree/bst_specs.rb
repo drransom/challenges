@@ -20,7 +20,6 @@ describe SelfBalancingBinarySearchTree do
 
       it 'returns the node added' do
         new_node = tree.add_element(5)
-        expect(new_node).to be_a(BSTNode)
         expect(new_node.value).to eq(5)
       end
 
