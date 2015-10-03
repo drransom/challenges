@@ -1,6 +1,6 @@
 def shortest_palindrome(string)
   reversed = string.reverse
-  kmp =
+  kmp = 
 
 end
 
