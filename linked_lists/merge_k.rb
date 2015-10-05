@@ -5,19 +5,33 @@ def merge_k_lists(lists = [])
   current_nodes = lists.dup
   first, current_index = find_min(current_nodes)
   current_node = first
-  current_nodes[current_index] = first.child
-  current_nodes.compact! unless first.child
+  current_nodes[current_index] = first.next
+  current_nodes.compact! unless first.next
   until current_nodes.empty?
     previous_node = current_node
     current_node, current_index = find_min(current_nodes)
-    previous_node.child = current_node
-    current_nodes[current_index] = current_node.child
-    current_nodes.compact! unless current_node.child
+    previous_node.next = current_node
+    current_nodes[current_index] = current_node.next
+    current_nodes.compact! unless current_node.next
   end
   first
 end
 
 def find_min(array)
-  index = array.map { |node| node.value }.each_with_index.min[1]
+  index = array.map { |node| node.val }.each_with_index.min[1]
   [array[index], index]
+end
+
+class DLLNode
+  def val
+    @value
+  end
+
+  def next
+    @child
+  end
+
+  def next=(other)
+    @child = other
+  end
 end
