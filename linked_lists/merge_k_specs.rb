@@ -39,4 +39,11 @@ describe '#merge_k_lists' do
     expect(node1c.child.value).to be(node2c.value)
     expect(node2c.child).to eq(nil)
   end
+
+  it 'passed an invalid data type' do
+    node1 = DLLNode.new(5)
+    node2 = DLLNode.new(10)
+    node1.child = node2
+    expect(merge_k_lists([[], node1]).value).to eq(5)
+  end
 end
