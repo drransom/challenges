@@ -46,7 +46,3 @@ class UglyNumberFinder
     uglies[n-1]
   end
 end
-
-
-
-puts nth_ugly_number(10)
