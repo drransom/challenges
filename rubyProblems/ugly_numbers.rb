@@ -7,44 +7,46 @@ def nth_ugly_number(n)
 end
 
 class UglyNumberFinder
-  def initialize(indices = {2: 0, 3: 0, 5: 0})
+  attr_accessor :uglies, :visited, :indices
+  def initialize(indices = { 2 => 0, 3 => 0, 5 => 0 })
     @visited = Set.new([1])
     @uglies = [1]
     @indices = indices
   end
 
   def increment_indices
-    @indices.each do |value, index|
-      increment_index(value) while @visited.include?(uglies[index] * value)
+    indices.each_key do |value|
+      increment_index(value) while visited.include?(uglies[indices[value]] * value)
     end
+  end
 
   def increment_index(value)
-    @indices[value] += 1
+    indices[value] += 1
   end
 
   def find_next_ugly
     increment_indices
     increments = []
-    @indices.each do |num, index|
-      increments << [num * @uglies[index]]
+    indices.each do |num, index|
+      increments << num * uglies[index]
     end
     return increments.min
   end
 
   def update_uglies!
     next_ugly = find_next_ugly
-    @uglies << next_ugly
-    @visited << next_ugly
+    uglies << next_ugly
+    visited << next_ugly
   end
 
   def find_nth_ugly(n)
-    while @uglies.length < n do
+    while uglies.length < n do
       update_uglies!
     end
-    @uglies[n-1]
+    uglies[n-1]
   end
 end
 
 
 
-puts nth_ugly_number(150)
+puts nth_ugly_number(10)
