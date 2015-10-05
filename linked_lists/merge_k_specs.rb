@@ -31,12 +31,12 @@ describe '#merge_k_lists' do
     node2b.child = node2c
     node3a = DLLNode.new(8)
     expect(merge_k_lists([node1a, node2a, node3a]).value).to eq(-1)
-    expect(node2a.child).to be(node2b)
-    expect(node2b.child).to be(node1a)
-    expect(node1a.child).to be(node3a)
-    expect(node3a.child).to be(node1b)
-    expect(node1b.child).to be(node1c)
-    expect(node1c.child).to be(node2c)
+    expect(node2a.child.value).to be(node2b.value)
+    expect(node2b.child.value).to be(node1a.value)
+    expect(node1a.child.value).to be(node3a.value)
+    expect(node3a.child.value).to be(node1b.value)
+    expect(node1b.child.value).to be(node1c.value)
+    expect(node1c.child.value).to be(node2c.value)
     expect(node2c.child).to eq(nil)
   end
 end
