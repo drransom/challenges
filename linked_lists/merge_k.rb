@@ -11,7 +11,6 @@ def merge_k_lists(lists = [])
     previous_node = current_node
     current_node, current_index = find_min(current_nodes)
     previous_node.child = current_node
-    # puts "current value is #{current_node ? current_node.value : 'no node'}"
     current_nodes[current_index] = current_node.child
     current_nodes.compact! unless current_node.child
   end
