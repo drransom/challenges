@@ -5,19 +5,19 @@ class MinMaxStack < Array
     super(args)
   end
 
-  def push (new)
+  def push (new_value)
     if empty?
-      @min << new
-      @max << new
+      @min << new_value
+      @max << new_value
     else
-      @min << [new, @min[-1]].min
-      @max << [new, @max[-1]].max
+      @min << [new_value, @min[-1]].min
+      @max << [new_value, @max[-1]].max
     end
-    super(new)
+    super(new_value)
   end
 
-  def << (new)
-    push(new)
+  def << (new_value)
+    push(new_value)
   end
 
   def max
@@ -33,6 +33,9 @@ class MinMaxStack < Array
     @max.pop
     super
   end
+
+  def sort
+    (@queue.reverse + @stack).sort
 end
 
 class MinMaxStackQueue
@@ -58,9 +61,31 @@ class MinMaxStackQueue
     @queue.pop
   end
 
+  def length
+    @stack.length + @queue.length
+  end
+
   def move_stack_to_queue
     if @queue.empty?
       @queue << @stack.pop until @stack.empty?
     end
   end
+
+  def [](num)
+    return nil if length == 0
+    num = num % length
+    if num < @queue.length
+      @queue[num - length]
+    else
+      @stack[num - @queue.length]
+    end
+  end
+
+  def each(&prc)
+    length.times do |index|
+      prc.call(self[index])
+    end
+  end
+end
+
 end
