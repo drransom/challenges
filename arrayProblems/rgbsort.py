@@ -27,5 +27,3 @@ class RGBSorter(list):
         temp = self[index1]
         self[index1] = self[index2]
         self[index2] = temp
-
-print RGBSorter(['G', 'B', 'R', 'B', 'B', 'B']).rgbSort()
