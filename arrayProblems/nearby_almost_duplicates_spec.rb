@@ -27,4 +27,9 @@ describe '#contains_nearby_almost_duplicate' do
     expect(contains_nearby_almost_duplicate(array, 3, 3)).to eq(true)
   end
 
+  it 'different test case' do
+    array = [1,3,6,2]
+    expect(contains_nearby_almost_duplicate(array, 1, 2)).to eq(true)
+  end
+
 end
