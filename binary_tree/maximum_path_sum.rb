@@ -80,7 +80,3 @@ class NullPathSumFinder
   def update_best_sum
   end
 end
-#
-# node = TreeNode.new(5)
-# node.left = TreeNode.new(2)
-# puts max_path_sum(node)
