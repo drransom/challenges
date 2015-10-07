@@ -55,7 +55,6 @@ class CycleFinder
   def find_cycle_from_node(visited, call_stack)
     cycle_lambda = lambda do |start_node|
       calculate_children(start_node).each do |child|
-        # debugger
         if call_stack.include?(child)
           return true
         elsif !visited.include?(child)
@@ -96,5 +95,3 @@ class InclusionStack < Array
     @included[val] > 0
   end
 end
-
-puts can_finish(2, [[1, 0], [0, 1]])
