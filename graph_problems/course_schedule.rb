@@ -21,13 +21,6 @@ def calculate_prerequisites(num_courses, prerequisites)
   prereq_array
 end
 
-
-def update_course_prereqs(array, num1, num2)
-  array[num1] = Set.new unless array[num1]
-  array[num1] << num2
-  array[num1] = array[num1].union(array[num2]) if array[num2]
-end
-
 class CycleFinder
   def initialize(nodes, calculate_children_proc)
     @nodes = nodes
