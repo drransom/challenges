@@ -2,6 +2,10 @@ def can_finish(num_courses = 0, prerequisites = [])
   !CoursesCycleFinder.new(num_courses, prerequisites).has_cycle?
 end
 
+def find_order(num_courses = 0, prerequisites = [])
+  AllCyclesFinder.new(num_courses, prerequisites).find_order
+end
+
 class CoursesCycleFinder
   attr_accessor :graph, :visited, :nodes
   def initialize(n, edges)
@@ -34,6 +38,23 @@ class CoursesCycleFinder
 end
 
 class AllCyclesFinder < CoursesCycleFinder
+  attr_accessor :inverted_graph
+
+  def initialize(n, edges)
+    super(n, edges)
+    @inverted_graph = Array.new(n) { [] }.tap do |arr|
+      edges.each { |course, prereq| arr[course] << prereq }
+    end
+  end
+
+  def has_prerequisite?(n)
+    !inverted_graph[n].empty?
+  end
+
+  def find_order
+    return [] if has_cycle?
+  end
+
 end
 
 array =
