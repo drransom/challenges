@@ -46,7 +46,7 @@ describe '#find_order' do
   end
 
   it 'two elements, no cycle' do
-    expect(find_order(2, [0, 1])).to eq([1, 0])
+    expect(find_order(2, [[0, 1]])).to eq([1, 0])
   end
 
   it 'cycle' do
