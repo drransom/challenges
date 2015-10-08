@@ -1,13 +1,43 @@
 require 'set'
 def can_finish(num_courses = 0, prerequisites = [])
-  graph = calculate_prerequisites(num_courses, prerequisites)
-  !CycleFinder.new((0...num_courses), Proc.new { |num| graph[num] }).has_cycle?
+  # graph = calculate_prerequisites(num_courses, prerequisites)
+  !CoursesCycleFinder.new(num_courses, prerequisites).has_cycle?
 end
 
 def calculate_prerequisites(num_courses, prerequisites)
   Array.new(num_courses).map { [] }.tap do |graph|
     prerequisites.uniq.each { |course, pre| graph[pre] << course }
   end
+end
+
+class CoursesCycleFinder
+  attr_accessor :graph, :visited, :nodes
+  def initialize(n, edges)
+    @nodes = (0...n).to_a
+    @graph = Array.new(n) { [] }.tap do |arr|
+      edges.each { |course, prereq| arr[prereq] << course }
+    end
+    @visited = [0] * n
+    @has_cycle = nil
+  end
+
+  def has_cycle?
+    return @has_cycle unless @has_cycle.nil?
+    calculate_cycle
+  end
+
+  def calculate_cycle
+    nodes.each { |node| return true if visited[node] == 0 && !dfs(node)}
+    false
+  end
+
+  def dfs(n)
+    return false if visited[n] == 1
+    visited[n] = 1
+    graph[n].each { |elem| return false unless dfs(elem) }
+    visited[n] = 2
+  end
+
 end
 
 class CycleFinder
@@ -47,6 +77,45 @@ class CycleFinder
         end
       end
       false
+    end
+  end
+end
+
+class InclusionStack < Array
+  def initialize(*args)
+    @included = Hash.new(0)
+  end
+
+  def push(val)
+    @included[val] += 1
+    super(val)
+  end
+
+  def <<(val)
+    push(val)
+  end
+
+  def pop
+    value = super until @included[value] >= 0 || self.empty?
+    if self.empty? && @include[value] <= 0
+      nil
+    else
+      @included[value] -= 1
+      value
+    end
+  end
+
+  def delete(val)
+    @included[val] = 0
+  end
+
+  def include?(val)
+    @included[val] > 0
+  end
+
+  def clear_top
+    while !self.empty? && !include?(self[-1])
+      pop
     end
   end
 end
