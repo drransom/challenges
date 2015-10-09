@@ -2,6 +2,10 @@ def combination_sum(candidates, target)
   CombinationFinder.new(candidates).find_combinations(target)
 end
 
+def combination_sum2(candidates, target)
+  CombinationFinder.new(candidates).find_combinations_no_repeats(target)
+end
+
 class CombinationFinder
   attr_accessor :candidates
   def initialize(candidates)
@@ -28,6 +32,10 @@ class CombinationFinder
       end_index -= 1
     end
     current_answer
+  end
+
+  def find_combinations_no_repeats(target)
+    nil
   end
 
 end
