@@ -7,7 +7,7 @@ describe '#combination_sum' do
   end
 
   it 'simple case' do
-    expect(combination_sum([1], 1)).to eq([1])
+    expect(combination_sum([1], 1)).to eq([[1]])
   end
 
   it 'another simple case' do
