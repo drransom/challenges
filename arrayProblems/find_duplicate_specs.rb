@@ -15,7 +15,7 @@ describe '#find_duplicate' do
   end
 
   it 'three elements' do
-    expect(find_duplicate[1, 2, 2]).to eq(2)
+    expect(find_duplicate([1, 2, 2])).to eq(2)
   end
 
   it 'highest number duplicate' do
