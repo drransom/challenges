@@ -1,16 +1,14 @@
-require 'byebug'
 def combination_sum(candidates, target)
-  CombinationFinder.new(candidates).find_combinations(target)
+  CombinationFinder.new(candidates).find_combinations(target).uniq
 end
 
 def combination_sum2(candidates, target)
-  CombinationFinder.new(candidates).find_combinations_no_repeats(target)
+  CombinationFinder.new(candidates).find_combinations_no_repeats(target).uniq
 end
 
 class CombinationFinder
   attr_accessor :candidates
   def initialize(candidates)
-    candidates.uniq!
     candidates.sort!
     @candidates = candidates
   end

@@ -45,11 +45,15 @@ describe '#combination_sum2' do
 
   it 'duplicates not used' do
     answer = [[2]]
-    expect(combination_sum2([1, 1, 1, 2], 2)).to eq(answer)
+    expect(combination_sum2([1, 2], 2)).to eq(answer)
   end
 
   it 'multiple answers' do
     answer = [[1, 4], [2, 3]].sort
     expect(combination_sum2([1, 2, 3, 4], 5).sort).to eq(answer)
+  end
+
+  it 'same number provided multiple times' do
+    expect(combination_sum2([1, 1], 2)).to eq([[1, 1]])
   end
 end
