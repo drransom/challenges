@@ -23,22 +23,6 @@ class DuplicateFinder
     n * (n + 1) / 2
   end
 
-  def sum_gt_n(n)
-    nums.select { |i| i > n }.inject(0, :+)
-  end
-
-  def sum_ge_n(n)
-    nums.select { |i| i >= n}.inject(0, :+)
-  end
-
-  def sum_le_n(n)
-    nums.select { |i| i <= n }.inject(0, :+)
-  end
-
-  def sum_lt_n(n)
-    nums.select { |i| i < n }.inject(0, :+)
-  end
-
   def find_duplicate
     base = check_bases_cases.call
     return base if base
@@ -51,19 +35,22 @@ class DuplicateFinder
     low = 1
     high = nums.length - 1
     mid = (low + high) / 2
-    counter = 0
 
     until low == high do
-      if range_is_correct?(low, mid)
+      actual_low = actual_sum_between(low, mid)
+      actual_high = actual_sum_between(mid, high)
+      expected_low = expected_sum_between(low, mid)
+      expected_high = expected_sum_between(mid, high)
+      if actual_low == expected_low
         #duplicate cannot be in this range
         low = mid
-      elsif range_is_correct?(mid, high)
+      elsif actual_high == expected_high
         #duplicate cannot be in top of range
         high = mid
-      elsif low_value?(low, mid)
+      elsif actual_low < expected_low
         #low value is replacing higher value within low range,
         #or high range value is replacing values in low range
-        if low_value?(mid, high)
+        if actual_high < expected_high
           #number from low range in high range
           high = mid
         else
@@ -90,18 +77,6 @@ class DuplicateFinder
     mid
   end
 
-  def high_value?(low, high)
-    expected_sum_between(low, high) < actual_sum_between(low, high)
-  end
-
-  def low_value?(low, high)
-    expected_sum_between(low, high) > actual_sum_between(low, high)
-  end
-
-  def range_is_correct?(low, high)
-    expected_sum_between(low, high) == actual_sum_between(low, high)
-  end
-
   def is_duplicate?(num)
     found = false
     nums.each do |current|
@@ -118,17 +93,6 @@ class DuplicateFinder
     lambda do
       return 0 if nums.length == 0
       return 1 if nums.length == 1
-      return excess if is_duplicate?(excess)
-
-      high = nums.max
-      return high if is_duplicate?(high)
-      return 1 if is_duplicate?(1)
-      nil
     end
   end
 end
-#
-arr = (1..1000).to_a
-arr << 803
-10.times { |i| arr[i * 40] = 803 }
-puts find_duplicate(arr)
