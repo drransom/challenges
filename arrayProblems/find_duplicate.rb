@@ -16,8 +16,27 @@ class DuplicateFinder
   end
 
   def find_duplicate
-    return 0 if nums.length == 0
-    return 1 if nums.length == 1
-    return excess if nums.count(excess) > 1
-  end      
+    check_bases_cases.call
+
+  end
+
+  def contains_duplicate?(num)
+    found = false
+    nums.each do |current|
+      if current == num
+        return true if found
+        found = true
+      end
+    end
+    false
+  end
+
+
+  def check_bases_cases
+    lambda do
+      return 0 if nums.length == 0
+      return 1 if nums.length == 1
+      return excess if contains_duplicate?(excess)
+    end
+  end
 end
