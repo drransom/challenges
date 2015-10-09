@@ -124,7 +124,4 @@ class RangeStatusChecker
     end
     false
   end
-
 end
-
-puts find_duplicate([1, 2, 2])
