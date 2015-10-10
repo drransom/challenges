@@ -1,4 +1,3 @@
-require 'byebug'
 def find_duplicate(nums)
   DuplicateFinder.new(nums).find_duplicate
 end
@@ -92,13 +91,7 @@ class RangeStatusChecker
     expected_low = expected_sum_between(low, mid)
     expected_high = expected_sum_between(mid, high)
 
-    if actual_low == expected_low
-      #duplicate cannot be in this range
-      :high
-    elsif actual_high == expected_high
-      #duplicate cannot be in top of range
-      :low
-    elsif actual_low < expected_low
+    if actual_low < expected_low
       #low value is replacing higher value within low range,
       #or high range value is replacing values in low range
       if actual_high < expected_high
@@ -108,10 +101,16 @@ class RangeStatusChecker
         #number from high range in low range
         :high
       end
-    else
-      #low value is replacing high vaue within low range
+    elsif actual_low > expected_low
+      #lower value is replacing higher value
+      #within low range
       :low
+    elsif actual_high < expected_high
+      :low
+    else
+      :high
     end
+
   end
 
   def is_duplicate?(num)

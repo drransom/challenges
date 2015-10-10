@@ -53,4 +53,9 @@ describe '#find_duplicate' do
     10.times { |i| arr[i * 40] = 803 }
     expect(find_duplicate(arr)).to eq(803)
   end
+
+  it 'other answer' do
+    arr = [4,4,16,3,12,18,11,19,10,17,4,15,4,9,4,13,4,4,1,4]
+    expect(find_duplicate(arr)).to eq(4)
+  end
 end
