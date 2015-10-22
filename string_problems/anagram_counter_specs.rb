@@ -1,4 +1,4 @@
-require_relative 'anagram_finder'
+require_relative 'anagram_counter'
 require 'rspec'
 
 describe 'String#count_anagramic_substrings' do
